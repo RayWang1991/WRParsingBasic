@@ -25,6 +25,5 @@ Pod::Spec.new do |s|
   s.frameworks = 'Foundation'    #所需的framework,多个用逗号隔开
 
   s.author       = { "ray wang" => "wangrui@bongmi.com" }
-
 end
 
