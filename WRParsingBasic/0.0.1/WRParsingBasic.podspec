@@ -6,6 +6,7 @@
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
 #  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/
 #
+
 Pod::Spec.new do |s|
 
   s.name         = "WRParsingBasic"
@@ -25,4 +26,4 @@ Pod::Spec.new do |s|
   s.frameworks = 'Foundation'    #所需的framework,多个用逗号隔开
 
   s.author       = { "ray wang" => "wangrui@bongmi.com" }
-nd
+end
