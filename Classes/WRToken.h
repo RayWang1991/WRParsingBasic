@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2017, Ray Wang
+ * All rights reserved
+ * Author: RayWang
+ */
+
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, WRTokenType){
@@ -11,6 +17,12 @@ typedef NS_ENUM(NSInteger, WRTokenType){
 
 - (BOOL)isMatchWith:(WRToken *)token;
 
-+ (WRToken *)tokenWithType:(WRTokenType)type andSymbol:(NSString *)symbol;
++ (instancetype)tokenWithType:(WRTokenType)type andSymbol:(NSString *)symbol;
+- (instancetype)initWithType:(WRTokenType)type andSymbol:(NSString *)symbol;
+  
+// The following methods use symbol start with a lower char as a terminal token
+
++ (instancetype)tokenWithSymbol:(NSString *)symbol;
+- (instancetype)initWithSymbol:(NSString *)symbol;
 
 @end

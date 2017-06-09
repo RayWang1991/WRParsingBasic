@@ -1,4 +1,10 @@
-@import "WRWRLanguage.h"
+/**
+ * Copyright (c) 2017, Ray Wang
+ * All rights reserved
+ * Author: RayWang
+ */
+
+#import "WRLanguage.h"
 
 @implementation WRLanguage
 - (instancetype)init{
@@ -32,7 +38,7 @@
                                     @[c,C]]};
   language.symbols = symbols;
   language.grammars = grammars;
-  language.startWRToken = S;
+  language.startToken = S;
   return language;
 }
 
