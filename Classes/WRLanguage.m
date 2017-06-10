@@ -5,6 +5,9 @@
  */
 
 #import "WRLanguage.h"
+@interface WRLanguage ()
+@property(nonatomic, strong, readwrite)NSMutableSet *nullableSymbolSet;
+@end
 
 @implementation WRLanguage
 - (instancetype)init{
@@ -42,4 +45,7 @@
   return language;
 }
 
+- (BOOL)isTokenNullable:(WRToken *)token{
+  return [self.nullableSymbolSet containsObject:token.symbol];
+}
 @end

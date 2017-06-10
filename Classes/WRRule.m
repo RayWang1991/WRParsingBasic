@@ -8,25 +8,25 @@
 
 @implementation WRRule
 
-- (instancetype)initWithRule:(NSString *)rule{
+- (instancetype)initWithRuleStr:(NSString *)ruleStr{
   if(self = [super init]){
-    _rule = rule;
+    _ruleStr = ruleStr;
     [self disposeRule];
   }
   return self;
 }
 
-+ (instancetype)ruleWithRule:(NSString *)ruleStr{
-  WRRule *wrRule = [[WRRule alloc]initWithRule:ruleStr];
++ (instancetype)ruleWithRuleStr:(NSString *)ruleStr{
+  WRRule *wrRule = [[WRRule alloc]initWithRuleStr:ruleStr];
   return wrRule;
 }
 
 - (void)disposeRule{
-  NSRange range = [_rule rangeOfString:@"->"];
+  NSRange range = [_ruleStr rangeOfString:@"->"];
   NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
   
   // #### left token ####
-  NSString *left = [[_rule substringToIndex:range.location]
+  NSString *left = [[_ruleStr substringToIndex:range.location]
                     stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   _leftToken = [WRToken tokenWithType:nonTerminal andSymbol:left];
   
@@ -36,8 +36,8 @@
   
   NSMutableArray *words = [NSMutableArray array];
   
-  for(; i < _rule.length; i++){
-    unichar cc = [_rule characterAtIndex:i];
+  for(; i < _ruleStr.length; i++){
+    unichar cc = [_ruleStr characterAtIndex:i];
     
     // state machine
     // state head found, head not found,
@@ -51,7 +51,7 @@
       } else{
         // head found, valid character
         // state goes to head not found, out put word
-        [words addObject:[_rule substringWithRange:NSMakeRange(head, i - head)]];
+        [words addObject:[_ruleStr substringWithRange:NSMakeRange(head, i - head)]];
         head = -1;
       }
     } else{
@@ -70,7 +70,7 @@
   // transition is white space
   if(head >= 0){
     // if head found, output word
-    [words addObject:[_rule substringWithRange:NSMakeRange(head, i - head)]];
+    [words addObject:[_ruleStr substringWithRange:NSMakeRange(head, i - head)]];
   }
   
   NSMutableArray *array = [NSMutableArray array];
@@ -81,7 +81,7 @@
 }
 
 - (NSString *)description{
-  return self.rule;
+  return self.ruleStr;
 }
 
 @end

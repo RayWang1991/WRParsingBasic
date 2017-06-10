@@ -4,8 +4,8 @@
  * Author: RayWang
  */
 
-#import "WRToken.h"
 #import "Foundation/Foundation.h"
+#import "WRToken.h"
 
 @interface WRLanguage : NSObject
 @property(nonatomic, strong, readwrite) WRToken *startToken;
@@ -18,5 +18,3 @@
 + (WRLanguage *)CFGrammar6_6;  
 
 @end
-
-
