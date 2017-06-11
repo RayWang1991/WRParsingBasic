@@ -6,15 +6,20 @@
 
 #import "Foundation/Foundation.h"
 #import "WRToken.h"
+#import "WRRule.h"
 
 @interface WRLanguage : NSObject
-@property(nonatomic, strong, readwrite) WRToken *startToken;
-@property(nonatomic, strong, readwrite) NSSet *symbols;
-@property(nonatomic, strong, readwrite) NSDictionary *grammars;
+@property(nonatomic, strong, readwrite) NSString *startSymbol;
+@property(nonatomic, strong, readwrite) NSSet <NSString *>*symbols;
+@property(nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *>*>*grammars;
+
+- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules;
 
 /*
  * Basic CF Grammar
  */
-+ (WRLanguage *)CFGrammar6_6;  
 
+//+ (WRLanguage *)CFGrammar6_6;  
+
++ (WRLanguage *)CFGrammar7_8;
 @end
