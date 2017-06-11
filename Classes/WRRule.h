@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "WRToken.h"
 
-@interface WRRule : NSObject
+@interface WRRule : NSObject <NSObject>
 
 @property (nonatomic, strong, readwrite) NSString *ruleStr;
 @property (nonatomic, strong, readwrite) WRToken *leftToken;
@@ -15,5 +15,7 @@
 
 - (instancetype)initWithRuleStr:(NSString *)ruleStr;
 + (instancetype)ruleWithRuleStr:(NSString *)ruleStr;
+- (instancetype)initWithRule:(WRRule *)rule;
++ (instancetype)ruleWithRule:(WRRule *)rule;
 
 @end

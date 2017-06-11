@@ -21,6 +21,23 @@
   return wrRule;
 }
 
+- (instancetype)initWithRule:(WRRule *)rule{
+  if(self = [super init]){
+    _ruleStr = rule.ruleStr; // same rule
+    _leftToken = rule.leftToken; // same token
+    _rightTokens = rule.rightTokens; // same tokens
+  }
+  return self;
+}
+
++ (instancetype)ruleWithRule:(WRRule *)rule{
+  return [[WRRule alloc]initWithRule:rule];
+}
+
+- (NSUInteger)hash{
+  return self.ruleStr.hash;
+}
+
 - (void)disposeRule{
   NSRange range = [_ruleStr rangeOfString:@"->"];
   NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
