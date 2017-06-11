@@ -1,4 +1,4 @@
-#import "WRTokoen.h"
+#import "WRToken.h"
 
 @implementation WRToken
 

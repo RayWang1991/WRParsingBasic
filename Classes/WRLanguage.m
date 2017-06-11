@@ -10,11 +10,11 @@
 @end
 
 @implementation WRLanguage
-- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules{
+- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules andStartSymbol:(NSString *)startSymbol{
   if(self = [super init]){
     _grammars = [WRLanguage grammarWithRules:rules];
     _symbols = [_grammars allKeys];
-    _startSymbol = @"S";
+    _startSymbol = startSymbol;
     [self disposeNullableToken];
   }
   return self;
@@ -92,6 +92,8 @@
   language.grammars = dict;
   language.startSymbol = @"S";
   [language disposeNullableToken];
+  
+  return language;
 }
 
 - (void)disposeNullableToken{
