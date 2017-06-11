@@ -13,7 +13,7 @@
 - (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules andStartSymbol:(NSString *)startSymbol{
   if(self = [super init]){
     _grammars = [WRLanguage grammarWithRules:rules];
-    _symbols = [_grammars allKeys];
+    _symbols = [NSSet setWithArray:[_grammars allKeys]];
     _startSymbol = startSymbol;
     [self disposeNullableToken];
   }
@@ -117,8 +117,8 @@
   
   // work loop
   for(NSUInteger i = 0; i< workList.count; i++){
-    NSString *currentSymbol = workList[i];
-    
+    NSString *currentSymbol = workList[i]; // TODO not used here
+    NSString *foundSymbol = nil; // symbol just found is nullable
     for(NSString *undeterminedSymbol in undeterminedSet){
       NSArray <WRRule *>*rules = self.grammars[undeterminedSymbol];
       for(WRRule *rule in rules){
@@ -131,15 +131,20 @@
           }
         }
         if(isNullable) {
-          [workList addObject:undeterminedSymbol];
-          [undeterminedSet removeObject:undeterminedSymbol];
-          [self.nullableSymbolSet addObject:undeterminedSymbol];
+          foundSymbol = undeterminedSymbol;
           break;
         }
       }
+      if(foundSymbol){
+        break;
+      }
+    }
+    if(foundSymbol){
+      [workList addObject:foundSymbol];
+      [self.nullableSymbolSet addObject:foundSymbol];
+      [undeterminedSet removeObject:foundSymbol];
     }
   }
-  
 }
 
 - (BOOL)isTokenNullable:(WRToken *)token{

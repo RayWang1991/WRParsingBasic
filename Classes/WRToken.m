@@ -2,11 +2,28 @@
 
 @implementation WRToken
 
+- (instancetype)initWithType:(WRTokenType)type andSymbol:(NSString *)symbol{
+  if(self = [super init]){
+    _type = type;
+    _symbol = symbol;
+  }
+  return self;
+}
+
 + (WRToken *)tokenWithType:(WRTokenType)type andSymbol:(NSString *)symbol{
-  WRToken *token = [[WRToken alloc]init];
-  token.type = type;
-  token.symbol = symbol;
+  WRToken *token = [[WRToken alloc]initWithType:type andSymbol:symbol];
   return token;
+}
+
+- (instancetype)initWithSymbol:(NSString *)symbol{
+  unichar firstChar = [symbol characterAtIndex:0];
+  WRTokenType type = [[NSCharacterSet lowercaseLetterCharacterSet]
+                      characterIsMember:firstChar] ? terminal:nonTerminal;
+  return [self initWithType:type andSymbol:symbol];
+}
+
++ (instancetype)tokenWithSymbol:(NSString *)symbol{
+  return [[WRToken alloc]initWithSymbol:symbol];
 }
 
 - (BOOL)isMatchWith:(WRToken *)token{

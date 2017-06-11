@@ -13,8 +13,7 @@
 @property(nonatomic, strong, readwrite) NSSet <NSString *>*symbols;
 @property(nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *>*>*grammars;
 
-- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules;
-
+- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules andStartSymbol:(NSString *)startSymbol;
 /*
  * Basic CF Grammar
  */
@@ -22,4 +21,7 @@
 //+ (WRLanguage *)CFGrammar6_6;  
 
 + (WRLanguage *)CFGrammar7_8;
+
+- (BOOL)isTokenNullable:(WRToken *)token;
+
 @end
