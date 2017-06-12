@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, WRTokenType){
 @property(nonatomic, assign, readwrite) WRTokenType type;
 @property(nonatomic, strong, readwrite) NSString *symbol;
 
-- (BOOL)isMatchWith:(WRToken *)token;
+- (BOOL)matchWith:(WRToken *)token;
 
 + (instancetype)tokenWithType:(WRTokenType)type andSymbol:(NSString *)symbol;
 - (instancetype)initWithType:(WRTokenType)type andSymbol:(NSString *)symbol;
