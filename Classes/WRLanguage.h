@@ -20,7 +20,9 @@
 
 //+ (WRLanguage *)CFGrammar6_6;  
 
-+ (WRLanguage *)CFGrammar7_8;
++ (WRLanguage *)CFGrammar7_8; // left recursive
+
++ (WRLanguage *)CFGrammar7_17; // eplisom, left recursive
 
 - (BOOL)isTokenNullable:(WRToken *)token;
 

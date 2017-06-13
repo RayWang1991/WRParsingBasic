@@ -96,6 +96,35 @@
   return language;
 }
 
++ (WRLanguage *)CFGrammar7_17{
+  WRToken *S = [WRToken tokenWithSymbol:@"S"];
+  WRToken *E = [WRToken tokenWithSymbol:@"E"];
+  WRToken *F = [WRToken tokenWithSymbol:@"F"];
+  WRToken *Q = [WRToken tokenWithSymbol:@"Q"];
+  WRToken *a = [WRToken tokenWithSymbol:@"a"];
+  WRToken *m = [WRToken tokenWithSymbol:@"*"];
+  WRToken *d = [WRToken tokenWithSymbol:@"/"];
+  
+  NSDictionary *dict = @{
+                         @"S":@[[WRRule ruleWithRuleStr:@"S -> E"]],
+                         @"E":@[[WRRule ruleWithRuleStr:@"E -> E Q F"],
+                                [WRRule ruleWithRuleStr:@"E -> F"]],
+                         @"F":@[[WRRule ruleWithRuleStr:@"F -> a"]],
+                         @"Q":@[[WRRule ruleWithRuleStr:@"Q -> *"],
+                                [WRRule ruleWithRuleStr:@"Q -> /"],
+                                [WRRule ruleWithRuleStr:@"Q -> "]]};
+  NSSet *symbols =
+  [NSSet setWithObjects:@"S",@"E",@"F",@"Q",@"a",@"m",@"d", nil];
+  
+  WRLanguage *language = [[WRLanguage alloc]init];
+  language.symbols = symbols;
+  language.grammars = dict;
+  language.startSymbol = @"S";
+  [language disposeNullableToken];
+  
+  return language;
+}
+
 - (void)disposeNullableToken{
   // initiate
   _nullableSymbolSet = [NSMutableSet set];
