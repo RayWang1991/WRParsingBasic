@@ -18,11 +18,15 @@
  * Basic CF Grammar
  */
 
++ (WRLanguage *)CFGrammar4_1;
+
 //+ (WRLanguage *)CFGrammar6_6;  
 
 + (WRLanguage *)CFGrammar7_8; // left recursive
 
 + (WRLanguage *)CFGrammar7_17; // eplisom, left recursive
+
++ (WRLanguage *)CFGrammar7_19; // eplisom, left recursive, baddly
 
 - (BOOL)isTokenNullable:(WRToken *)token;
 

@@ -26,8 +26,3 @@
   return [[WRToken alloc]initWithSymbol:symbol];
 }
 
-- (BOOL)isMatchWith:(WRToken *)token{
-  return [self.symbol isEqualToString:token.symbol];
-}
-
-@end

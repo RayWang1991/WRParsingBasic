@@ -20,6 +20,16 @@
   return self;
 }
 
++ (WRLanguage *)CFGrammar4_1{
+  return [[self alloc]initWithRuleStrings:@[@"Expr -> Expr + Term",
+                                            @"Expr -> Term",
+                                            @"Term -> Term × Factor",
+                                            @"Term -> Factor",
+                                            @"Factor -> ( Expr )",
+                                            @"Factor -> i"]
+                           andStartSymbol:@"Expr"];
+}
+
 //TODO update later
 /*
 + (WRLanguage *)CFGrammar6_6{
@@ -123,6 +133,11 @@
   [language disposeNullableToken];
   
   return language;
+}
+
++ (WRLanguage *)CFGrammar7_19{
+  return [[self alloc]initWithRuleStrings:@[@"S -> A A x", @"A -> "]
+                           andStartSymbol:@"S"];
 }
 
 - (void)disposeNullableToken{
