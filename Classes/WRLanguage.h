@@ -30,7 +30,9 @@
 
 // Paper Elizabeth Scott SPPF-Style Parsing From Earley Recognisers
 
-+ (WRLanguage *)CFGrammar_SPFER_2;
++ (WRLanguage *)CFGrammar_SPFER_2; // ambiguous
+
++ (WRLanguage *)CFGrammar_SPFER_3; // ambiguous
 
 - (BOOL)isTokenNullable:(WRToken *)token;
 

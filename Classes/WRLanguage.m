@@ -150,6 +150,14 @@
   return [[self alloc]initWithRuleStrings:@[@"S -> S S | b"]
                            andStartSymbol:@"S"];
 }
+
++ (WRLanguage *)CFGrammar_SPFER_3{
+  return [[self alloc]initWithRuleStrings:@[@"S -> A T | a T",
+                                            @"A -> a| B A",
+                                            @"B ->",
+                                            @"T -> b b b"]
+                           andStartSymbol:@"S"];
+}
 - (void)disposeNullableToken{
   // initiate
   _nullableSymbolSet = [NSMutableSet set];
