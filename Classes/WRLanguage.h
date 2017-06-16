@@ -28,6 +28,10 @@
 
 + (WRLanguage *)CFGrammar7_19; // eplisom, left recursive, baddly
 
+// Paper Elizabeth Scott SPPF-Style Parsing From Earley Recognisers
+
++ (WRLanguage *)CFGrammar_SPFER_2;
+
 - (BOOL)isTokenNullable:(WRToken *)token;
 
 @end

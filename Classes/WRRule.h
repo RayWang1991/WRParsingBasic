@@ -9,7 +9,7 @@
 
 @interface WRRule : NSObject <NSObject>
 
-@property (nonatomic, strong, readwrite) NSString *ruleStr;
+@property (nonatomic, strong, readonly) NSString *ruleStr;
 @property (nonatomic, strong, readwrite) WRToken *leftToken;
 @property (nonatomic, strong, readwrite) NSArray <WRToken *> *rightTokens;
 
@@ -17,5 +17,5 @@
 + (instancetype)ruleWithRuleStr:(NSString *)ruleStr;
 - (instancetype)initWithRule:(WRRule *)rule;
 + (instancetype)ruleWithRule:(WRRule *)rule;
-
++ (NSArray <WRRule *> *)rulesWithOrRuleStr:(NSString *)ruleStr;
 @end

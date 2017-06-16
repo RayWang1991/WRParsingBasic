@@ -12,7 +12,9 @@ typedef NS_ENUM(NSInteger, WRTokenType){
 };
 
 @interface WRToken : NSObject
+
 @property(nonatomic, assign, readwrite) WRTokenType type;
+
 @property(nonatomic, strong, readwrite) NSString *symbol;
 
 - (BOOL)matchWith:(WRToken *)token;

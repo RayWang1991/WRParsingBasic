@@ -65,17 +65,23 @@
 + (NSDictionary <NSString *, NSArray <WRRule *>*>*)grammarWithRules:(NSArray <NSString *> *)rules{
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   for(NSString *ruleStr in rules){
-    WRRule *rule = [WRRule ruleWithRuleStr:ruleStr];
-    NSMutableArray *array;
-    NSString *symbol = rule.leftToken.symbol;
-    if(array = dict[symbol]){
-      [array addObject:rule];
-    }else{
-      array = [NSMutableArray arrayWithObject:rule];
-      [dict setValue:array forKey:symbol];
+    NSArray *rules = [WRRule rulesWithOrRuleStr:ruleStr];
+    for( WRRule *rule in rules){
+      [self addRule:rule toGrammar:dict];
     }
   }
   return dict;
+}
+
++ (void)addRule:(WRRule *)rule toGrammar:(NSMutableDictionary *)dict{
+  NSMutableArray *array;
+  NSString *symbol = rule.leftToken.symbol;
+  if(array = dict[symbol]){
+    [array addObject:rule];
+  }else{
+    array = [NSMutableArray arrayWithObject:rule];
+    [dict setValue:array forKey:symbol];
+  }
 }
 
 + (WRLanguage *)CFGrammar7_8{
@@ -140,6 +146,10 @@
                            andStartSymbol:@"S"];
 }
 
++ (WRLanguage *)CFGrammar_SPFER_2{
+  return [[self alloc]initWithRuleStrings:@[@"S -> S S | b"]
+                           andStartSymbol:@"S"];
+}
 - (void)disposeNullableToken{
   // initiate
   _nullableSymbolSet = [NSMutableSet set];

@@ -6,12 +6,15 @@
 
 #import "WRRule.h"
 
+@interface WRRule ()
+@property (nonatomic, strong, readwrite) NSString *ruleStr;
+@end
+
 @implementation WRRule
 
 - (instancetype)initWithRuleStr:(NSString *)ruleStr{
   if(self = [super init]){
-    _ruleStr = ruleStr;
-    [self disposeRule];
+    [self disposeRuleWithRuleString:ruleStr];
   }
   return self;
 }
@@ -34,16 +37,114 @@
   return [[WRRule alloc]initWithRule:rule];
 }
 
+typedef NS_ENUM(NSInteger, WRRuleCharType){
+  CharTypeWord,
+  CharTypeWhiteSpace,
+  CharTypeOr
+};
+
++ (NSArray <WRRule *> *)rulesWithOrRuleStr:(NSString *)ruleStr{
+  NSRange range = [ruleStr rangeOfString:@"->"];
+  NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
+  NSCharacterSet *orSet = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+  
+  NSMutableArray *rules = [NSMutableArray array];
+  // #### left token ####
+  NSString *left = [[ruleStr substringToIndex:range.location]
+                    stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+  
+  WRToken *leftToken = [WRToken tokenWithType:nonTerminal andSymbol:left];
+  NSInteger i = range.location + range.length;
+  NSInteger head = -1; // head -1 means head not found, here head is the first char of word
+  NSMutableArray *words = [NSMutableArray array];
+  NSInteger orFound = 0;
+  
+  for(; i< ruleStr.length; i++){
+   unichar cc = [ruleStr characterAtIndex:i];
+    WRRuleCharType type = [whitespaceCharacterSet characterIsMember:cc] ? CharTypeWhiteSpace :
+                          [orSet characterIsMember:cc] ? CharTypeOr: CharTypeWord;
+    // state machine
+    // state head found, head not found,
+    // transition is word, is white, is |
+    switch (type) {
+      case CharTypeOr:{
+        // out put rule
+        orFound ++;
+        if(head < 0){
+          // not found head
+          ;
+        }else{
+          [words addObject:[ruleStr substringWithRange:NSMakeRange(head, i - head)]];
+          head = -1;
+        }
+        WRRule *rule = [[WRRule alloc]init];
+        rule.leftToken = leftToken;
+        NSMutableArray *array = [NSMutableArray array];
+        rule.rightTokens = array;
+        for(NSString * word in words){
+          [array addObject:[WRToken tokenWithSymbol:word]];
+        }
+        [words removeAllObjects] ;
+        [rules addObject:rule];
+        head = -1;
+        break;
+      }
+        
+      case CharTypeWord:{
+        // find a valid char
+        if(head < 0){
+          head = i;
+        }else{
+          ;
+        }
+        break;
+      }
+      case CharTypeWhiteSpace:{
+        // find a whiteSpace
+        if(head < 0){
+          ;
+        }else{
+          [words addObject:[ruleStr substringWithRange:NSMakeRange(head, i - head)]];
+          head = -1;
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  
+  // input string comes to end
+  if(head >= 0){
+    // if head found, output word
+    [words addObject:[ruleStr substringWithRange:NSMakeRange(head, i - head)]];
+  }
+  
+  // check or number
+  if(orFound + 1 > rules.count){
+    WRRule *rule = [[WRRule alloc]init];
+    rule.leftToken = leftToken;
+    NSMutableArray *array = [NSMutableArray array];
+    rule.rightTokens = array;
+    for(NSString * word in words){
+      [array addObject:[WRToken tokenWithSymbol:word]];
+    }
+    [rules addObject:rule];
+  }
+  return rules;
+}
+
+
 - (NSUInteger)hash{
   return self.ruleStr.hash;
 }
 
-- (void)disposeRule{
-  NSRange range = [_ruleStr rangeOfString:@"->"];
+- (void)disposeRuleWithRuleString:(NSString *)ruleStr{
+  NSRange range = [ruleStr rangeOfString:@"->"];
   NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
   
   // #### left token ####
-  NSString *left = [[_ruleStr substringToIndex:range.location]
+  NSString *left = [[ruleStr substringToIndex:range.location]
                     stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   _leftToken = [WRToken tokenWithType:nonTerminal andSymbol:left];
   
@@ -53,8 +154,8 @@
   
   NSMutableArray *words = [NSMutableArray array];
   
-  for(; i < _ruleStr.length; i++){
-    unichar cc = [_ruleStr characterAtIndex:i];
+  for(; i < ruleStr.length; i++){
+    unichar cc = [ruleStr characterAtIndex:i];
     
     // state machine
     // state head found, head not found,
@@ -68,7 +169,7 @@
       } else{
         // head found, valid character
         // state goes to head not found, out put word
-        [words addObject:[_ruleStr substringWithRange:NSMakeRange(head, i - head)]];
+        [words addObject:[ruleStr substringWithRange:NSMakeRange(head, i - head)]];
         head = -1;
       }
     } else{
@@ -87,7 +188,7 @@
   // transition is white space
   if(head >= 0){
     // if head found, output word
-    [words addObject:[_ruleStr substringWithRange:NSMakeRange(head, i - head)]];
+    [words addObject:[ruleStr substringWithRange:NSMakeRange(head, i - head)]];
   }
   
   NSMutableArray *array = [NSMutableArray array];
@@ -97,8 +198,20 @@
   _rightTokens = array;
 }
 
+
+- (NSString *)ruleStr{
+  if(nil == _ruleStr){
+    NSMutableString *string = [NSMutableString stringWithFormat:@"%@->",_leftToken.symbol];
+    for(WRToken *token in self.rightTokens){
+      [string appendFormat:@"%@",token.symbol];
+    }
+    _ruleStr = [NSString stringWithString:string];
+  }
+  return _ruleStr;
+}
 - (NSString *)description{
   return self.ruleStr;
 }
+
 
 @end
