@@ -135,10 +135,6 @@ typedef NS_ENUM(NSInteger, WRRuleCharType){
 }
 
 
-- (NSUInteger)hash{
-  return self.ruleStr.hash;
-}
-
 - (void)disposeRuleWithRuleString:(NSString *)ruleStr{
   NSRange range = [ruleStr rangeOfString:@"->"];
   NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
@@ -198,7 +194,6 @@ typedef NS_ENUM(NSInteger, WRRuleCharType){
   _rightTokens = array;
 }
 
-
 - (NSString *)ruleStr{
   if(nil == _ruleStr){
     NSMutableString *string = [NSMutableString stringWithFormat:@"%@->",_leftToken.symbol];
@@ -209,9 +204,18 @@ typedef NS_ENUM(NSInteger, WRRuleCharType){
   }
   return _ruleStr;
 }
+
 - (NSString *)description{
   return self.ruleStr;
 }
 
+- (NSString *)dotedRule{
+  // override point
+  return self.description;
+}
+
+- (NSUInteger)hash{
+  return self.ruleStr.hash;
+}
 
 @end

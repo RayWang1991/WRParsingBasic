@@ -18,4 +18,6 @@
 - (instancetype)initWithRule:(WRRule *)rule;
 + (instancetype)ruleWithRule:(WRRule *)rule;
 + (NSArray <WRRule *> *)rulesWithOrRuleStr:(NSString *)ruleStr;
+
+- (NSString *)dotedRule; // override point
 @end
