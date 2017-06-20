@@ -17,8 +17,8 @@
 
 - (instancetype)initWithSymbol:(NSString *)symbol{
   unichar firstChar = [symbol characterAtIndex:0];
-  WRTokenType type = [[NSCharacterSet lowercaseLetterCharacterSet]
-                      characterIsMember:firstChar] ? terminal:nonTerminal;
+  WRTokenType type = [[NSCharacterSet uppercaseLetterCharacterSet]
+                      characterIsMember:firstChar] ? nonTerminal: terminal;
   return [self initWithType:type andSymbol:symbol];
 }
 
