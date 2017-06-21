@@ -39,8 +39,14 @@
 
 + (WRLanguage *)CFGrammar_Add_Mult_1; // ambiguous, no priority for × and +
 
++ (WRLanguage *)CFGrammar_Test_First_1;
+
++ (WRLanguage *)CFGrammar_EAC_3_4_RR; // right recursive variant of the classic expression grammar
+
 - (BOOL)isTokenNullable:(WRToken *)token;
 
 - (NSSet <NSString *> *)firstSetForToken:(WRToken *)token;
+
+- (NSSet <NSString *> *)followSetForToken:(WRToken *)token;
 
 @end
