@@ -19,3 +19,14 @@
 - (id)second;
 
 @end
+
+@interface WRTreeNode : NSObject
+@property(nonatomic, strong, readwrite)NSString *contentStr;
+// Children
+@property(nonatomic, strong, readwrite) NSArray <WRTreeNode *> *children;
+
++ (instancetype)treeNodeWithContent:(NSString *)content;
+
++ (void)printTree:(WRTreeNode *)node;
+@end
+
