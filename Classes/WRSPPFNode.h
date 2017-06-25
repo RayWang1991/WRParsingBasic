@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, WRSPPFNodeType){
                           leftExtent:(NSInteger)leftExtent
                       andRightExtent:(NSInteger)rightExtent;
 
-// assert family array' count > 0
+// the parameter familyArray's count should > 0
 - (BOOL)containsFamilly:(NSArray <WRSPPFNode *>*)familyArray;
 
 @end

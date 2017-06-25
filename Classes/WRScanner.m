@@ -7,8 +7,7 @@
 #import "WRScanner.h"
 
 @interface WRScanner ()
-@property(nonatomic, strong, readwrite)NSArray <WRToken *>*tokenArray;
-@property(nonatomic, assign, readwrite)NSInteger index;
+
 @end
 
 @implementation WRScanner
@@ -16,7 +15,6 @@
   if(self = [super init]){
     _inputStr = inputStr;
     _index = 0;
-    _tokenArray = nil;
   }
   return self;
 }
@@ -28,22 +26,26 @@
 - (void)setInputStr:(NSString *)inputStr{
   _inputStr = inputStr;
   _index = 0;
-  _tokenArray = nil;
 }
 
 - (WRToken *)nextToken{
   return [self nextTokenWithIndex:_index++];
 }
 
-- (NSArray <WRToken *> *)tokenArray{
+- (NSMutableArray <WRToken *> *)tokenArray{
   if(nil == _tokenArray){
     NSMutableArray *array = [NSMutableArray array];
-    for(NSUInteger i = 0 ; i <= self.inputStr.length; i++){
-      [array addObject: [self nextTokenWithIndex:i]];
-    }
     _tokenArray = array;
   }
   return _tokenArray;
+}
+
+- (NSMutableArray <NSError *> *)errorArray{
+  if(nil == _errorArray){
+    NSMutableArray *array = [NSMutableArray array];
+    _errorArray = array;
+  }
+  return _errorArray;
 }
 
 // private
@@ -56,4 +58,8 @@
     return token;
   }
 }
+
 @end
+
+
+

@@ -11,10 +11,18 @@ typedef NS_ENUM(NSInteger, WRTokenType){
   nonTerminal
 };
 
+typedef struct{
+  // start position
+  int line; 
+  int colum;
+  int length;
+} WRTokenContentInfo;
+
 @interface WRToken : NSObject
 
 @property(nonatomic, assign, readwrite) WRTokenType type;
-
+@property(nonatomic, assign, readwrite) WRTokenContentInfo contentInfo;
+@property(nonatomic, assign, readwrite) NSString *value;
 @property(nonatomic, strong, readwrite) NSString *symbol;
 
 - (BOOL)matchWith:(WRToken *)token;
