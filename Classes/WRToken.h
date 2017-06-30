@@ -22,7 +22,7 @@ typedef struct{
 
 @property(nonatomic, assign, readwrite) WRTokenType type;
 @property(nonatomic, assign, readwrite) WRTokenContentInfo contentInfo;
-@property(nonatomic, assign, readwrite) NSString *value;
+@property(nonatomic, strong, readwrite) NSString *value;
 @property(nonatomic, strong, readwrite) NSString *symbol;
 
 - (BOOL)matchWith:(WRToken *)token;

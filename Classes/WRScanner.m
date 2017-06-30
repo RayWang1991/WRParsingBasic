@@ -26,26 +26,28 @@
 - (void)setInputStr:(NSString *)inputStr{
   _inputStr = inputStr;
   _index = 0;
+  [self.tokens removeAllObjects];
+  [self.errors removeAllObjects];
 }
 
 - (WRToken *)nextToken{
   return [self nextTokenWithIndex:_index++];
 }
 
-- (NSMutableArray <WRToken *> *)tokenArray{
-  if(nil == _tokenArray){
+- (NSMutableArray <WRToken *> *)tokens{
+  if(nil == _tokens){
     NSMutableArray *array = [NSMutableArray array];
-    _tokenArray = array;
+    _tokens = array;
   }
-  return _tokenArray;
+  return _tokens;
 }
 
-- (NSMutableArray <NSError *> *)errorArray{
-  if(nil == _errorArray){
+- (NSMutableArray <NSError *> *)errors{
+  if(nil == _errors){
     NSMutableArray *array = [NSMutableArray array];
-    _errorArray = array;
+    _errors = array;
   }
-  return _errorArray;
+  return _errors;
 }
 
 // private

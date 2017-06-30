@@ -10,9 +10,11 @@
 
 #import "WRToken.h"
 #import "WRRule.h"
+#import "WRItem.h"
 #import "WRLanguage.h"
 
 // TODO
 #import "WRScanner.h"
+#import "WRLexer.h"
 #import "WRUtils.h"
 #import "WRSPPFNode.h" 

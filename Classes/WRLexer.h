@@ -7,6 +7,8 @@
 #import <Foundation/Foundation.h>
 #import "WRScanner.h"
 
+extern NSString const* kWRLexerErrorDomain;
+
 @interface WRLexer : WRScanner
 
 @property(nonatomic, assign, readwrite) int currentLine;
@@ -15,4 +17,5 @@
 
 - (void)startScan;
 
+- (void)test;
 @end

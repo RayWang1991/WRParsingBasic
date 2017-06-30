@@ -10,8 +10,8 @@
 //TODO simple scanner, complete later
 
 @interface WRScanner : NSObject
-@property(nonatomic, strong, readwrite)NSMutableArray <WRToken *>*tokenArray;
-@property(nonatomic, strong, readwrite)NSMutableArray <NSError *>*errorArray;
+@property(nonatomic, strong, readwrite)NSMutableArray <WRToken *>*tokens;
+@property(nonatomic, strong, readwrite)NSMutableArray <NSError *>*errors;
 @property(nonatomic, assign, readwrite)NSInteger index;
 @property(nonatomic, strong, readwrite)NSString *inputStr;
 
