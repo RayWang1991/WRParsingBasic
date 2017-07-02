@@ -31,6 +31,8 @@
 
 + (WRLanguage *)CFGrammar_8_9; // epsilon
 
++ (WRLanguage *)CFGrammar_9_14; // LR0
+
 // Paper Elizabeth Scott SPPF-Style Parsing From Earley Recognisers
 
 + (WRLanguage *)CFGrammar_SPFER_2; // ambiguous

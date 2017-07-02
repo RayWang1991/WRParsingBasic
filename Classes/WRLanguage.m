@@ -148,6 +148,15 @@
                             andStartSymbol:@"Session"];
 }
 
++ (WRLanguage *)CFGrammar_9_14 {
+  return [[self alloc] initWithRuleStrings:@
+    [@"S -> E $",
+      @"E -> E - T | T ",
+      @"T -> n",
+      @"T -> ( E )"]
+                            andStartSymbol:@"S"];
+}
+
 + (WRLanguage *)CFGrammar_Add_Mult_1 {
   return [[self alloc] initWithRuleStrings:@[@"Expr ->  i | Expr + Expr | Expr × Expr"]
                             andStartSymbol:@"Expr"];
@@ -365,7 +374,7 @@
                                             forKey:token.symbol];
                            }
                            [followSet unionSet:firstSet];
-                           
+
                            //2.1 update
                            tailToken = [self isTokenNullable:token] ? tailToken : nil;
 

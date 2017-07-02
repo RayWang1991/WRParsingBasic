@@ -30,4 +30,7 @@
   return [self.symbol isEqualToString:token.symbol];
 }
 
+- (NSString *)description{
+  return self.symbol;
+}
 @end

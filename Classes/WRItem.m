@@ -5,10 +5,8 @@
  */
 
 #import "WRItem.h"
-#import "WRUtils.h"
 
 @interface WRItem ()
-
 
 @end
 
