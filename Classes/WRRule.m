@@ -47,6 +47,7 @@ typedef NS_ENUM(NSInteger, WRRuleCharType){
   NSRange range = [ruleStr rangeOfString:@"->"];
   NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet whitespaceCharacterSet];
   NSCharacterSet *orSet = [NSCharacterSet characterSetWithCharactersInString:@"|"];
+  NSInteger ruleIndex = 0;
   
   NSMutableArray *rules = [NSMutableArray array];
   // #### left token ####
@@ -81,6 +82,7 @@ typedef NS_ENUM(NSInteger, WRRuleCharType){
         rule.leftToken = leftToken;
         NSMutableArray *array = [NSMutableArray array];
         rule.rightTokens = array;
+        rule.ruleIndex = ruleIndex ++;
         for(NSString * word in words){
           [array addObject:[WRToken tokenWithSymbol:word]];
         }
@@ -126,6 +128,7 @@ typedef NS_ENUM(NSInteger, WRRuleCharType){
     rule.leftToken = leftToken;
     NSMutableArray *array = [NSMutableArray array];
     rule.rightTokens = array;
+    rule.ruleIndex = ruleIndex ++;
     for(NSString * word in words){
       [array addObject:[WRToken tokenWithSymbol:word]];
     }

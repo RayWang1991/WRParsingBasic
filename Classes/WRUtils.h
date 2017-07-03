@@ -8,6 +8,9 @@
 
 @interface WRUtils : NSObject
 
++ (NSString *)debugStrWithTabs:(NSUInteger)tabNumber
+                     forString:(NSString *)str;
+
 @end
 
 

@@ -24,6 +24,7 @@ typedef struct{
 @property(nonatomic, assign, readwrite) WRTokenContentInfo contentInfo;
 @property(nonatomic, strong, readwrite) NSString *value;
 @property(nonatomic, strong, readwrite) NSString *symbol;
+@property(nonatomic, strong, readwrite) NSArray <WRToken *>*children;
 
 - (BOOL)matchWith:(WRToken *)token;
 

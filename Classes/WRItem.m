@@ -38,6 +38,7 @@
   if (self = [super initWithRule:rule]) {
     _dotPos = dotPosition;
     _itemPos = itemPosition;
+    self.ruleIndex = rule.ruleIndex;
   }
   return self;
 }
@@ -55,6 +56,7 @@
   if (self = [super initWithRule:item]) {
     _dotPos = item.dotPos;
     _itemPos = itemPosition;
+    self.ruleIndex = item.ruleIndex;
   }
   return self;
 }

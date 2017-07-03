@@ -19,6 +19,7 @@
 
     _nonterminals = [NSSet setWithArray:[_grammars allKeys]];
     _startSymbol = startSymbol;
+    [self labelRuleIndex];
     [self addNonTerminalandTerminals];
     [self disposeNullableToken];
     [self computeFirstSets];
@@ -152,8 +153,7 @@
   return [[self alloc] initWithRuleStrings:@
     [@"S -> E $",
       @"E -> E - T | T ",
-      @"T -> n",
-      @"T -> ( E )"]
+      @"T -> n | ( E )"]
                             andStartSymbol:@"S"];
 }
 
@@ -198,6 +198,16 @@
       @"Term' -> × Factor Term'| ÷ Factor Term' | ",
       @"Factor -> ( Expr )| num | name"]
                             andStartSymbol:@"Expr"];
+}
+
+#pragma mark label index for rules
+-(void)labelRuleIndex{
+  for(NSArray *rules in self.grammars.allValues){
+    NSInteger i = 0;
+    for(WRRule *rule in rules){
+      rule.ruleIndex = i ++;
+    }
+  }
 }
 
 # pragma mark tokens
