@@ -5,15 +5,17 @@
  */
 
 #import <Foundation/Foundation.h>
+@class WRTerminal;
 
 @interface WRUtils : NSObject
 
 + (NSString *)debugStrWithTabs:(NSUInteger)tabNumber
                      forString:(NSString *)str;
-
 @end
 
-
+@interface WRTest : NSObject
+extern BOOL (^wrCheckTerminal)(WRTerminal *, NSString *, NSInteger, NSInteger, NSInteger);
+@end
 
 @interface WRPair : NSObject
 

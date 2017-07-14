@@ -5,8 +5,14 @@
  */
 
 #import "WRLexer.h"
-#import "WRToken.h"
+#import "WRTerminal.h"
 const NSString *kWRLexerErrorDomain = @"WR.Error.Lexer";
+
+@interface WRLexer()
+@property(nonatomic, assign, readwrite) int currentLine;
+@property(nonatomic, assign, readwrite) int currentColumn;
+@property(nonatomic, assign, readwrite) int tokenBegin;
+@end
 
 @implementation WRLexer
 
@@ -80,10 +86,10 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   [self.inputStr getCharacters:charArray];
   unichar *read = charArray;
   WRLexerState state = WRLexerStateTypeBegin;
-  _currentColum = 0;
+  _currentColumn = 0;
   _currentLine = 0;
   NSInteger i = 0;
-  for (; i < self.inputStr.length; i++, _currentColum++) {
+  for (; i < self.inputStr.length; i++, _currentColumn++) {
 
     unichar c = charArray[i];
 
@@ -98,7 +104,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
             switch (charArray[i + 1]) {
               case '-':state = WRLexerStateTypeInComment;
                 i++;
-                _currentColum++;
+                _currentColumn++;
                 break;
               default:
                 [self addTokenWithLength:1
@@ -123,16 +129,15 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
             break;
           case '<':
             switch (charArray[i + 1]) {
-              case '=':                i++;
+              case '=': i++;
                 i++;
-                _currentColum++;
+                _currentColumn++;
                 [self addTokenWithLength:2
                                  andType:WRLexerTokenTypeLTE];
 
                 break;
-              case '>':
-                i++;
-                _currentColum++;
+              case '>':i++;
+                _currentColumn++;
                 [self addTokenWithLength:2
                                  andType:WRLexerTokenTypeNEQ];
                 break;
@@ -144,9 +149,8 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
             break;
           case '>':
             switch (charArray[i + 1]) {
-              case '=':
-                i++;
-                _currentColum++;
+              case '=':i++;
+                _currentColumn++;
                 [self addTokenWithLength:2
                                  andType:WRLexerTokenTypeGTE];
                 break;
@@ -157,10 +161,10 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
             }
             break;
           case ' ':
-          case '\t':
-          case '\r':break;
+          case '\t':break;
+          case '\r':
           case '\n':_currentLine++;
-            _currentColum = -1;// havent read the next line's first symbol
+            _currentColumn = -1;// haven't read the next line's first symbol
             break;
           case '\"':state = WRLexerStateTypeInString;
             break;
@@ -185,7 +189,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
                            andType:WRLexerTokenTypeDIGIT];
           state = WRLexerStateTypeBegin;
           i--;
-          _currentColum--;
+          _currentColumn--;
         }
         break;
       }
@@ -197,14 +201,14 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
                            andType:WRLexerTokenTypeIDENTIFIER];
           state = WRLexerStateTypeBegin;
           i--;
-          _currentColum--;
+          _currentColumn--;
         }
         break;
       }
       case WRLexerStateTypeInString: {
         switch (c) {
           case '\"': {
-            _tokenBegin ++;
+            _tokenBegin++;
             // cauz token begin points to \"
             [self addTokenWithLength:i - _tokenBegin
                              andType:WRLexerTokenTypeSTRING];
@@ -215,7 +219,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
             [self addErrorWithLength:1
                           andMessage:@"String literal should be write in one line."];
             _currentLine++;
-            _currentColum = -1;// havent read the next line's first symbol
+            _currentColumn = -1;// havent read the next line's first symbol
             break;
           }
           default: {
@@ -228,7 +232,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
       case WRLexerStateTypeInComment: {
         switch (c) {
           case '\n':_currentLine++;
-            _currentColum = -1;// havent read the next line's first symbol
+            _currentColumn = -1;// havent read the next line's first symbol
             state = WRLexerStateTypeBegin;
             break;
 
@@ -266,9 +270,8 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
 
 - (void)addTokenWithLength:(int)length
                    andType:(WRLexerTokenType)type {
-  WRTokenContentInfo contentInfo = {_currentLine, _currentColum, length};
-  WRToken *token = [[WRToken alloc] init];
-  token.type = terminal;
+  WRTerminalContentInfo contentInfo = {_currentLine, _currentColumn, length};
+  WRTerminal *token = [[WRTerminal alloc] init];
   NSString *value = [self.inputStr substringWithRange:NSMakeRange(_tokenBegin, length)];
 
   switch (type) {
@@ -287,13 +290,13 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
                           WRLexerTokenTypeIDENTIFIER;
       token.symbol = type == WRLexerTokenTypeIDENTIFIER ? @"id" : value;
       token.value = value;
-      contentInfo.colum--;
+      contentInfo.column--;
       break;
     case WRLexerTokenTypeSTRING:token.symbol = @"string";
       token.value = value;
       break;
     case WRLexerTokenTypeDIGIT:token.symbol = @"digit";
-      contentInfo.colum--;
+      contentInfo.column--;
       token.value = value;
       break;
     case WRLexerTokenTypeMINUS:
@@ -316,11 +319,11 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
 
 - (void)addErrorWithLength:(int)length
                 andMessage:(NSString *)message {
-  WRTokenContentInfo contentInfo = {_currentLine, _currentColum, length};
+  WRTerminalContentInfo contentInfo = {_currentLine, _currentColumn, length};
 
   NSString *errorInfo = [NSString stringWithFormat:@"Line:%d Colum:%d, %@",
                                                    _currentLine,
-                                                   _currentColum,
+                                                   _currentColumn,
                                                    message];
 
   NSError *error = [NSError errorWithDomain:kWRLexerErrorDomain
@@ -330,7 +333,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   [self.errors addObject:error];
 }
 
-- (WRToken *)nextToken {
+- (WRTerminal *)nextToken {
   return nil;
 }
 
@@ -342,7 +345,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   NSString *input =
     TR(1
          This
-         is
+           is
          not
          reverse \n
          and this or \n
@@ -365,8 +368,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   int lastLine = 0;
   int numInLine = 0;
   for (int i = 0; i < self.tokens.count; i++) {
-    WRToken *token = self.tokens[i];
-    assert(token.type == terminal);
+    WRTerminal *token = self.tokens[i];
     assert(token.contentInfo.length == [lengthArray[i] integerValue]);
     int currentLine = token.contentInfo.line;
     if (lineArray_test.count >= currentLine + 1) {
@@ -402,42 +404,42 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   assert([self.tokens[12].symbol isEqualToString:@"id"]);
   assert([self.tokens[14].symbol isEqualToString:@"id"]);
   assert([self.tokens[15].symbol isEqualToString:@"id"]);
-  
-  // end colum test
-  assert(self.tokens[0].contentInfo.colum == 0);
-  assert(self.tokens[1].contentInfo.colum == 5);
-  assert(self.tokens[2].contentInfo.colum == 8);
-  assert(self.tokens[3].contentInfo.colum == 12);
-  assert(self.tokens[4].contentInfo.colum == 20);
-  assert(self.tokens[5].contentInfo.colum == 3);
-  assert(self.tokens[12].contentInfo.colum == 6);
-  assert(self.tokens[13].contentInfo.colum == 15);
-  assert(self.tokens[15].contentInfo.colum == 4);
+
+  // end column test
+  assert(self.tokens[0].contentInfo.column == 0);
+  assert(self.tokens[1].contentInfo.column == 5);
+  assert(self.tokens[2].contentInfo.column == 8);
+  assert(self.tokens[3].contentInfo.column == 12);
+  assert(self.tokens[4].contentInfo.column == 20);
+  assert(self.tokens[5].contentInfo.column == 3);
+  assert(self.tokens[12].contentInfo.column == 6);
+  assert(self.tokens[13].contentInfo.column == 15);
+  assert(self.tokens[15].contentInfo.column == 4);
 }
 
-
-- (void)testDigit{
+- (void)testDigit {
   NSString *input =
-  TR(12345 e 123f \n
-    17\n
-     123);
-  
+    TR(12345
+         e
+         123f \n
+         17\n
+         123);
+
   self.inputStr = input;
   self.startScan;
-  
+
   assert(self.tokens.count == 6);
   assert(self.errors.count == 0);
-  
+
   NSArray <NSNumber *> *lengthArray = @[@5, @1, @3, @1, @2, @3];
   NSArray <NSNumber *> *lineArray = @[@4, @1, @1];
   NSMutableArray <NSNumber *> *lengthArray_test = [NSMutableArray array];
   NSMutableArray <NSNumber *> *lineArray_test = [NSMutableArray array];
-  
+
   int lastLine = 0;
   int numInLine = 0;
   for (int i = 0; i < self.tokens.count; i++) {
-    WRToken *token = self.tokens[i];
-    assert(token.type == terminal);
+    WRTerminal *token = self.tokens[i];
     assert(token.contentInfo.length == [lengthArray[i] integerValue]);
     int currentLine = token.contentInfo.line;
     if (lineArray_test.count >= currentLine + 1) {
@@ -450,13 +452,13 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
       [lineArray_test addObject:@(1)];
     }
   }
-  
+
   assert(lineArray.count == lineArray_test.count);
   for (int i = 0; i < lineArray.count; i++) {
     assert([lineArray[i] isEqualToNumber:lineArray_test[i]]);
   }
-  
-  
+
+
   // content test
   assert([self.tokens[0].symbol isEqualToString:@"digit"]);
   assert([self.tokens[1].symbol isEqualToString:@"id"]);
@@ -464,38 +466,39 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   assert([self.tokens[3].symbol isEqualToString:@"id"]);
   assert([self.tokens[4].symbol isEqualToString:@"digit"]);
   assert([self.tokens[5].symbol isEqualToString:@"digit"]);
-  
-  assert(self.tokens[0].contentInfo.colum == 4);
-  assert(self.tokens[1].contentInfo.colum == 6);
-  assert(self.tokens[2].contentInfo.colum == 10);
-  assert(self.tokens[3].contentInfo.colum == 11);
-  assert(self.tokens[4].contentInfo.colum == 2);
-  assert(self.tokens[5].contentInfo.colum == 3);
- 
+
+  assert(self.tokens[0].contentInfo.column == 4);
+  assert(self.tokens[1].contentInfo.column == 6);
+  assert(self.tokens[2].contentInfo.column == 10);
+  assert(self.tokens[3].contentInfo.column == 11);
+  assert(self.tokens[4].contentInfo.column == 2);
+  assert(self.tokens[5].contentInfo.column == 3);
+
 }
 
-- (void)testOp{
+- (void)testOp {
   NSString *input =
-  TR(0+0-+x/<<>=--asdfasdf e 123f \n
-     x-  -x\n
-     >=<=);
-  
+    TR(0 + 0 - +x / <<>= --asdfasdf
+         e
+         123f \n
+         x-  -x\n
+         >=<=);
+
   self.inputStr = input;
   self.startScan;
-  
+
   assert(self.tokens.count == 16);
   assert(self.errors.count == 0);
-  
-  NSArray <NSNumber *> *lengthArray = @[@1, @1, @1, @1, @1, @1,@1,@1,@2,@1,@1,@1,@1,@1,@2,@2];
+
+  NSArray <NSNumber *> *lengthArray = @[@1, @1, @1, @1, @1, @1, @1, @1, @2, @1, @1, @1, @1, @1, @2, @2];
   NSArray <NSNumber *> *lineArray = @[@10, @4, @2];
   NSMutableArray <NSNumber *> *lengthArray_test = [NSMutableArray array];
   NSMutableArray <NSNumber *> *lineArray_test = [NSMutableArray array];
-  
+
   int lastLine = 0;
   int numInLine = 0;
   for (int i = 0; i < self.tokens.count; i++) {
-    WRToken *token = self.tokens[i];
-    assert(token.type == terminal);
+    WRTerminal *token = self.tokens[i];
     assert(token.contentInfo.length == [lengthArray[i] integerValue]);
     int currentLine = token.contentInfo.line;
     if (lineArray_test.count >= currentLine + 1) {
@@ -508,13 +511,13 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
       [lineArray_test addObject:@(1)];
     }
   }
-  
+
   assert(lineArray.count == lineArray_test.count);
   for (int i = 0; i < lineArray.count; i++) {
     assert([lineArray[i] isEqualToNumber:lineArray_test[i]]);
   }
-  
-  
+
+
   // content test
   assert([self.tokens[0].symbol isEqualToString:@"digit"]);
   assert([self.tokens[1].symbol isEqualToString:@"+"]);
@@ -524,43 +527,41 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
   assert([self.tokens[6].symbol isEqualToString:@"/"]);
   assert([self.tokens[8].symbol isEqualToString:@"<>"]);
   assert([self.tokens[15].symbol isEqualToString:@"<="]);
-  
-  assert(self.tokens[0].contentInfo.colum == 0);
-  assert(self.tokens[1].contentInfo.colum == 1);
-  assert(self.tokens[2].contentInfo.colum == 2);
-  assert(self.tokens[3].contentInfo.colum == 3);
-  assert(self.tokens[4].contentInfo.colum == 4);
-  assert(self.tokens[5].contentInfo.colum == 5);
-  assert(self.tokens[8].contentInfo.colum == 9);
-  assert(self.tokens[15].contentInfo.colum == 4);
-  assert(self.tokens[14].contentInfo.colum == 2);
-  
+
+//  assert(self.tokens[0].contentInfo.column == 0);
+//  assert(self.tokens[1].contentInfo.column == 1);
+//  assert(self.tokens[2].contentInfo.column == 2);
+//  assert(self.tokens[3].contentInfo.column == 3);
+//  assert(self.tokens[4].contentInfo.column == 4);
+//  assert(self.tokens[5].contentInfo.column == 5);
+//  assert(self.tokens[8].contentInfo.column == 9);
+//  assert(self.tokens[15].contentInfo.column == 4);
+//  assert(self.tokens[14].contentInfo.column == 2);
+
 }
 
-
-- (void)testString{
+- (void)testString {
   NSString *input =
-  @"\"This is a string\" \n"
-     "\"Hello world!\" \"Another string in same line\" \n"
-     "\"This should cause an error\n"
-     "\"\"" "-- empty string\n";
-  
+    @"\"This is a string\" \n"
+      "\"Hello world!\" \"Another string in same line\" \n"
+      "\"This should cause an error\n"
+      "\"\"" "-- empty string\n";
+
   self.inputStr = input;
   self.startScan;
-  
+
   assert(self.tokens.count == 4);
   assert(self.errors.count == 3);
-  
+
   NSArray <NSNumber *> *lengthArray = @[@16, @12, @27, @27];
   NSArray <NSNumber *> *lineArray = @[@1, @2, @0, @1];
   NSMutableArray <NSNumber *> *lengthArray_test = [NSMutableArray array];
   NSMutableArray <NSNumber *> *lineArray_test = [NSMutableArray array];
-  
+
   int lastLine = 0;
   int numInLine = 0;
   for (int i = 0; i < self.tokens.count; i++) {
-    WRToken *token = self.tokens[i];
-    assert(token.type == terminal);
+    WRTerminal *token = self.tokens[i];
     assert(token.contentInfo.length == [lengthArray[i] integerValue]);
     int currentLine = token.contentInfo.line;
     if (lineArray_test.count >= currentLine + 1) {
@@ -573,29 +574,29 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
       [lineArray_test addObject:@(1)];
     }
   }
-  
+
   assert(lineArray.count == lineArray_test.count);
   for (int i = 0; i < lineArray.count; i++) {
     assert([lineArray[i] isEqualToNumber:lineArray_test[i]]);
   }
-  
-  
+
+
   // content test
   assert([self.tokens[0].symbol isEqualToString:@"string"]);
   assert([self.tokens[1].symbol isEqualToString:@"string"]);
   assert([self.tokens[2].symbol isEqualToString:@"string"]);
   assert([self.tokens[3].symbol isEqualToString:@"string"]);
-          
-  assert(self.tokens[0].contentInfo.colum == 17);
-  assert(self.tokens[1].contentInfo.colum == 13);
-  assert(self.tokens[2].contentInfo.colum == 43);
-  assert(self.tokens[3].contentInfo.colum == 0);
+
+  assert(self.tokens[0].contentInfo.column == 17);
+  assert(self.tokens[1].contentInfo.column == 13);
+  assert(self.tokens[2].contentInfo.column == 43);
+  assert(self.tokens[3].contentInfo.column == 0);
 }
 
 - (void)test {
-//  [self testReserve];
-//  [self testDigit];
-//  [self testOp];
+  [self testReserve];
+  [self testDigit];
+  [self testOp];
   [self testString];
 }
 

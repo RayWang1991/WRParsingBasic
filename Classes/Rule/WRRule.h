@@ -5,14 +5,14 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "WRToken.h"
+#import "NSString + WRToken.h"
 
 @interface WRRule : NSObject <NSObject>
 
 @property (nonatomic, assign, readwrite) NSInteger ruleIndex;
 @property (nonatomic, strong, readonly) NSString *ruleStr;
-@property (nonatomic, strong, readwrite) WRToken *leftToken;
-@property (nonatomic, strong, readwrite) NSArray <WRToken *> *rightTokens;
+@property (nonatomic, strong, readwrite) NSString *leftToken;
+@property (nonatomic, strong, readwrite) NSArray <NSString *> *rightTokens;
 
 - (instancetype)initWithRuleStr:(NSString *)ruleStr;
 + (instancetype)ruleWithRuleStr:(NSString *)ruleStr;

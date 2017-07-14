@@ -10,11 +10,39 @@
 
 @interface WRLanguage : NSObject
 @property(nonatomic, strong, readwrite) NSString *startSymbol;
-@property(nonatomic, strong, readwrite) NSSet <NSString *>*terminals;
-@property(nonatomic, strong, readwrite) NSSet <NSString *>*nonterminals;
+@property(nonatomic, strong, readwrite) NSMutableSet <NSString *>*terminals;
+@property(nonatomic, strong, readwrite) NSMutableSet <NSString *>*nonterminals;
+
+@property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSNumber *> *token2IdMapper;
+@property (nonatomic, strong, readwrite) NSMutableArray <NSString *> *nonterminalList;
+@property (nonatomic, strong, readwrite) NSMutableArray <NSString *> *terminalList; 
+
 @property(nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *>*>*grammars;
 
-- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules andStartSymbol:(NSString *)startSymbol;
+- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules
+                     andStartSymbol:(NSString *)startSymbol;
+
+// call when needed, constuct LL(1) parser
+- (void)addEofToTerminals;
+
+- (void)computeFirstSets;
+
+- (void)computeFollowSets;
+
+- (void)computeFirstPlusSets;
+
+// wrappers
+- (BOOL)isTokenNullable:(NSString *)token;
+
+- (NSSet <NSString *> *)firstSetForToken:(NSString *)tokenSymbol;
+
+- (NSSet <NSString *> *)followSetForToken:(NSString *)tokenSymbol;
+
+- (NSSet <NSString *> *)firstPlusSetForRule:(WRRule *)rule;
+
+- (NSSet <NSString *> *)firstPlusSetForToken:(NSString *)tokenSymbol
+                                andRuleIndex:(NSInteger)index;
+
 /*
  * Basic CF Grammar
  */
@@ -43,12 +71,7 @@
 
 + (WRLanguage *)CFGrammar_Test_First_1;
 
-+ (WRLanguage *)CFGrammar_EAC_3_4_RR; // right recursive variant of the classic expression grammar
++ (WRLanguage *)CFGrammar_EAC_3_4_RR; // right recursive variant of the classic expression grammar, LL1
 
-- (BOOL)isTokenNullable:(WRToken *)token;
-
-- (NSSet <NSString *> *)firstSetForToken:(WRToken *)token;
-
-- (NSSet <NSString *> *)followSetForToken:(WRToken *)token;
 
 @end

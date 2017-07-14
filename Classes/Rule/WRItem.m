@@ -107,7 +107,7 @@
   return self.rightTokens.count <= self.dotPos;
 }
 
-- (WRToken *)nextAskingToken {
+- (NSString *)nextAskingToken {
   if (self.isComplete) {
     return nil;
   } else {
@@ -115,7 +115,7 @@
   }
 }
 
-- (WRToken *)justCompletedToken {
+- (NSString *)justCompletedToken {
   if (self.dotPos >= 1 && self.dotPos <= self.rightTokens.count) {
     return self.rightTokens[self.dotPos - 1];
   } else {
@@ -124,14 +124,19 @@
 }
 
 - (NSString *)currentDotedRule {
-  NSMutableString *mutStr = [NSMutableString stringWithString:self.leftToken.symbol];
-  [mutStr appendString:@"->"];
-  for (NSUInteger i = 0; i < self.rightTokens.count; i++) {
-    if (i == _dotPos) {
-      [mutStr appendString:@"·"];
+  NSMutableString *mutStr = [NSMutableString stringWithString:self.leftToken];
+  [mutStr appendString:@" ->"];
+  
+  NSInteger i = 0;
+  for(NSString *token in self.rightTokens){
+    if(i == _dotPos){
+      [mutStr appendFormat:@" ·%@",token];
+    } else{
+      [mutStr appendFormat:@" %@",token];
     }
-    [mutStr appendString:self.rightTokens[i].symbol];
+    i++;
   }
+  
   if (self.rightTokens.count == _dotPos) {
     [mutStr appendString:@"·"];
   }

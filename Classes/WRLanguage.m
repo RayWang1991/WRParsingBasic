@@ -7,8 +7,12 @@
 #import "WRLanguage.h"
 @interface WRLanguage ()
 @property (nonatomic, strong, readwrite) NSMutableSet *nullableSymbolSet;
+// LL(1) parsing use
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSMutableSet<NSString *> *> *firstSets;
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSMutableSet<NSString *> *> *followSets;
+@property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSArray< NSMutableSet<NSString *> *> *>
+  *firstPlusSets;
+
 @end
 
 @implementation WRLanguage
@@ -22,8 +26,6 @@
     [self labelRuleIndex];
     [self addNonTerminalandTerminals];
     [self disposeNullableToken];
-    [self computeFirstSets];
-    [self computeFollowSets];
   }
   return self;
 }
@@ -53,7 +55,7 @@
 + (void)addRule:(WRRule *)rule
       toGrammar:(NSMutableDictionary *)dict {
   NSMutableArray *array;
-  NSString *symbol = rule.leftToken.symbol;
+  NSString *symbol = rule.leftToken;
   if (array = dict[symbol]) {
     [array addObject:rule];
   } else {
@@ -64,13 +66,6 @@
 }
 
 + (WRLanguage *)CFGrammar7_8 {
-  WRToken *S = [WRToken tokenWithSymbol:@"S"];
-  WRToken *E = [WRToken tokenWithSymbol:@"E"];
-  WRToken *F = [WRToken tokenWithSymbol:@"F"];
-  WRToken *Q = [WRToken tokenWithSymbol:@"Q"];
-  WRToken *a = [WRToken tokenWithSymbol:@"a"];
-  WRToken *m = [WRToken tokenWithSymbol:@"-"];
-  WRToken *p = [WRToken tokenWithSymbol:@"+"];
 
   NSDictionary *dict = @{
     @"S": @[[WRRule ruleWithRuleStr:@"S -> E"]],
@@ -100,13 +95,6 @@
 }
 
 + (WRLanguage *)CFGrammar7_17 {
-  WRToken *S = [WRToken tokenWithSymbol:@"S"];
-  WRToken *E = [WRToken tokenWithSymbol:@"E"];
-  WRToken *F = [WRToken tokenWithSymbol:@"F"];
-  WRToken *Q = [WRToken tokenWithSymbol:@"Q"];
-  WRToken *a = [WRToken tokenWithSymbol:@"a"];
-  WRToken *m = [WRToken tokenWithSymbol:@"*"];
-  WRToken *d = [WRToken tokenWithSymbol:@"/"];
 
   NSDictionary *dict = @{
     @"S": @[[WRRule ruleWithRuleStr:@"S -> E"]],
@@ -192,38 +180,60 @@
 }
 
 + (WRLanguage *)CFGrammar_EAC_3_4_RR { // right recursive
-  return [[self alloc] initWithRuleStrings:@[@"Expr -> Term Expr'",
+  return [[self alloc] initWithRuleStrings:@[
+      @"Goal -> Expr",
+      @"Expr -> Term Expr'",
       @"Expr' -> + Term Expr'| - Term Expr' | ",
       @"Term -> Factor Term'",
       @"Term' -> × Factor Term'| ÷ Factor Term' | ",
       @"Factor -> ( Expr )| num | name"]
-                            andStartSymbol:@"Expr"];
+                            andStartSymbol:@"Goal"];
 }
 
 #pragma mark label index for rules
--(void)labelRuleIndex{
-  for(NSArray *rules in self.grammars.allValues){
+- (void)labelRuleIndex {
+  for (NSArray *rules in self.grammars.allValues) {
     NSInteger i = 0;
-    for(WRRule *rule in rules){
-      rule.ruleIndex = i ++;
+    for (WRRule *rule in rules) {
+      rule.ruleIndex = i++;
     }
   }
 }
 
 # pragma mark tokens
 - (void)addNonTerminalandTerminals {
-  _nonterminals = [NSSet setWithArray:[_grammars allKeys]];
-  NSMutableSet *set = [NSMutableSet set];
+  NSInteger nonterminalId = 0;
+  _nonterminalList = [NSMutableArray array];
+  _token2IdMapper = [NSMutableDictionary dictionary];
+  _nonterminals = [NSMutableSet set];
+
+  for (NSString *nont in _grammars.allKeys) {
+    if (![_nonterminals containsObject:nont]) {
+      [_nonterminals addObject:nont];
+      [_nonterminalList addObject:nont];
+      [_token2IdMapper setValue:@(nonterminalId)
+                         forKey:nont];
+      nonterminalId++;
+    }
+  }
+
+  NSInteger terminalId = 0;
+  _terminalList = [NSMutableArray array];
+  _terminals = [NSMutableSet set];
+
   for (NSArray *rules in self.grammars.allValues) {
     for (WRRule *rule in rules) {
-      for (WRToken *token in rule.rightTokens) {
-        if (![_nonterminals containsObject:token.symbol]) {
-          [set addObject:token.symbol];
+      for (NSString *token in rule.rightTokens) {
+        if ([token tokenTypeForString] == terminal && ![_terminals containsObject:token]) {
+          [_terminals addObject:token];
+          [_terminalList addObject:token];
+          [_token2IdMapper setValue:@(terminalId)
+                             forKey:token];
+          terminalId++;
         }
       }
     }
   }
-  _terminals = set;
 }
 
 # pragma mark Nullable function
@@ -255,8 +265,8 @@
       for (WRRule *rule in rules) {
         BOOL isNullable = YES;
         // if all right tokens are nullable, it is nullable
-        for (WRToken *token in rule.rightTokens) {
-          if (![self.nullableSymbolSet containsObject:token.symbol]) {
+        for (NSString *token in rule.rightTokens) {
+          if (![self.nullableSymbolSet containsObject:token]) {
             isNullable = NO;
             break;
           }
@@ -278,8 +288,15 @@
   }
 }
 
-- (BOOL)isTokenNullable:(WRToken *)token {
-  return [self.nullableSymbolSet containsObject:token.symbol];
+- (BOOL)isTokenNullable:(NSString *)token {
+  return [self.nullableSymbolSet containsObject:token];
+}
+
+- (void)addEofToTerminals {
+  [self.terminalList addObject:WREndOfFileTokenSymbol];
+  [self.token2IdMapper setValue:@(self.terminalList.count - 1)
+                         forKey:WREndOfFileTokenSymbol];
+  [_terminals addObject:WREndOfFileTokenSymbol];
 }
 
 #pragma mark FirstSet function
@@ -306,12 +323,12 @@
   NSMutableDictionary <NSString *, NSSet <NSString *> *> *formula = [NSMutableDictionary dictionary];
   for (NSString *nont in self.nonterminals) {
     for (WRRule *rule in self.grammars[nont]) {
-      [rule.rightTokens enumerateObjectsUsingBlock:^(WRToken *_Nonnull token, NSUInteger idx, BOOL *_Nonnull stop) {
-        NSMutableSet *set = formula[token.symbol];
+      [rule.rightTokens enumerateObjectsUsingBlock:^(NSString *_Nonnull token, NSUInteger idx, BOOL *_Nonnull stop) {
+        NSMutableSet *set = formula[token];
         if (set == nil) {
           set = [NSMutableSet set];
           [formula setValue:set
-                     forKey:token.symbol];
+                     forKey:token];
         }
         [set addObject:nont];
         *stop = [self isTokenNullable:token] ? NO : YES;
@@ -342,25 +359,29 @@
   }
 }
 
+- (NSSet <NSString *> *)firstSetForToken:(NSString *)token {
+  return self.firstSets[token];
+}
+
 #pragma mark FollowSet function
 - (void)computeFollowSets {
   _followSets = [NSMutableDictionary dictionary];
   //add EOF to startSymbol's Follow
-  [_followSets setValue:[NSMutableSet setWithObject:@"EOF"]
+  [_followSets setValue:[NSMutableSet setWithObject:WREndOfFileTokenSymbol]
                  forKey:self.startSymbol];
 
   NSMutableDictionary <NSString *, NSSet <NSString *> *> *formula = [NSMutableDictionary dictionary];
   for (NSString *nont in self.grammars) {
     for (WRRule *rule in self.grammars[nont]) {
       NSMutableSet <NSString *>
-        *firstSet = [NSMutableSet set]; // initiation use, should be Follow(A), however ,we do not have yet
+        *firstSet = [NSMutableSet set]; // initiation use, should be Follow(A), however, we do not have yet
       __block NSString *tailToken = nont;
       [rule.rightTokens
         enumerateObjectsWithOptions:NSEnumerationReverse
-                         usingBlock:^(WRToken *_Nonnull token, NSUInteger idx, BOOL *_Nonnull stop) {
-                           if (token.type == terminal) {
+                         usingBlock:^(NSString *_Nonnull token, NSUInteger idx, BOOL *_Nonnull stop) {
+                           if ([token tokenTypeForString] == terminal) {
                              [firstSet removeAllObjects];
-                             [firstSet addObject:token.symbol];
+                             [firstSet addObject:token];
                              tailToken = nil;
                              return;
                            }
@@ -373,15 +394,15 @@
                                [formula setValue:set
                                           forKey:tailToken];
                              }
-                             [set addObject:token.symbol];
+                             [set addObject:token];
                            }
 
                            //1.2 initiation with first sets
-                           NSMutableSet *followSet = _followSets[token.symbol];
+                           NSMutableSet *followSet = _followSets[token];
                            if (nil == followSet) {
                              followSet = [NSMutableSet set];
                              [_followSets setValue:followSet
-                                            forKey:token.symbol];
+                                            forKey:token];
                            }
                            [followSet unionSet:firstSet];
 
@@ -393,7 +414,7 @@
                            if (![self isTokenNullable:token]) {
                              [firstSet removeAllObjects];
                            }
-                           [firstSet unionSet:_firstSets[token.symbol]];
+                           [firstSet unionSet:_firstSets[token]];
                          }];
     }
   }
@@ -424,11 +445,43 @@
   NSLog(@"done");
 }
 
-- (NSSet <NSString *> *)firstSetForToken:(WRToken *)token {
-  return self.firstSets[token.symbol];
+- (NSSet <NSString *> *)followSetForToken:(NSString *)tokenSymbol {
+  return self.followSets[tokenSymbol];
+}
+#pragma mark Fisrt+ function
+- (void)computeFirstPlusSets {
+  _firstPlusSets = [NSMutableDictionary dictionary];
+  for (NSString *nont in self.grammars.allKeys) {
+    NSMutableArray *array = [NSMutableArray array];
+    [_firstPlusSets setValue:array
+                      forKey:nont];
+    for (WRRule *rule in self.grammars[nont]) {
+      // computes first(a follow(A))
+      NSMutableSet *set = [NSMutableSet set];
+      BOOL isAllNullable = YES;
+      for (NSString *token in rule.rightTokens) {
+        [set unionSet:[self firstSetForToken:token]];
+        if (![self isTokenNullable:token]) {
+          isAllNullable = NO;
+          break;
+        }
+      }
+      if (isAllNullable) {
+        [set unionSet:[self followSetForToken:nont]];
+      }
+      [array addObject:set];
+    }
+  }
 }
 
-- (NSSet <NSString *> *)followSetForToken:(WRToken *)token {
-  return self.followSets[token.symbol];
+- (NSSet <NSString *> *)firstPlusSetForRule:(WRRule *)rule {
+  NSString *token = rule.leftToken;
+  return _firstPlusSets[token][rule.ruleIndex];
 }
+
+- (NSSet <NSString *> *)firstPlusSetForToken:(NSString *)token
+                                andRuleIndex:(NSInteger)index {
+  return _firstPlusSets[token][index];
+}
+
 @end

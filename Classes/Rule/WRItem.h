@@ -59,10 +59,10 @@
 /* Right Hand Methods*/
 
 // The token right after the dot;
-- (WRToken *)nextAskingToken;
+- (NSString *)nextAskingToken;
 
 // The token right before the dot;
-- (WRToken *)justCompletedToken;
+- (NSString *)justCompletedToken;
 
 // override methods
 - (NSString *)dotedRule;

@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, WRSPPFNodeType){
 
 @property (nonatomic, assign, readwrite) WRSPPFNodeType type;
 @property (nonatomic, strong, readwrite) WRRule *item;
-@property (nonatomic, strong, readwrite) WRToken *token;
+@property (nonatomic, strong, readwrite) NSString *token;
 @property (nonatomic, assign, readwrite) NSInteger leftExtent;
 @property (nonatomic, assign, readwrite) NSInteger rightExtent;
 @property (nonatomic, strong, readwrite) NSString *nodeStr;

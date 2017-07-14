@@ -14,27 +14,40 @@
 - (instancetype)initWithInputStr:(NSString *)inputStr{
   if(self = [super init]){
     _inputStr = inputStr;
-    _index = 0;
+    _tokenIndex = 0;
   }
   return self;
 }
 
+- (void)startScan {
+  [self reset];
+}
+
 - (void)reset{
-  _index = 0;
+  _tokenIndex = 0;
 }
 
 - (void)setInputStr:(NSString *)inputStr{
   _inputStr = inputStr;
-  _index = 0;
+  _tokenIndex = 0;
   [self.tokens removeAllObjects];
   [self.errors removeAllObjects];
 }
 
-- (WRToken *)nextToken{
-  return [self nextTokenWithIndex:_index++];
+- (WRTerminal *)nextToken{
+  return [self nextTerminalWithIndex:_tokenIndex++];
 }
 
-- (NSMutableArray <WRToken *> *)tokens{
+- (void)scanToEnd{
+  WRToken *token = nil;
+  while(token = [self nextToken]){
+    [self.tokens addObject:token];
+  }
+}
+
+#pragma mark - getter
+
+- (NSMutableArray <WRTerminal *> *)tokens{
   if(nil == _tokens){
     NSMutableArray *array = [NSMutableArray array];
     _tokens = array;
@@ -51,12 +64,12 @@
 }
 
 // private
-- (WRToken *)nextTokenWithIndex:(NSInteger)index{
+- (WRTerminal *)nextTerminalWithIndex:(NSInteger)index{
   if(index >= self.inputStr.length) {
     return nil;
   } else{
-    WRToken *token =
-    [WRToken tokenWithSymbol:[self.inputStr substringWithRange:NSMakeRange(index, 1)]];
+    WRTerminal *token =
+    [WRTerminal tokenWithSymbol:[self.inputStr substringWithRange:NSMakeRange(index, 1)]];
     return token;
   }
 }
