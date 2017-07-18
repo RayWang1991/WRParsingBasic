@@ -15,7 +15,7 @@
                  andRightExtent:(NSInteger)rightExtent {
   if (self = [super init]) {
     if ([content isKindOfClass:[NSString class]]) {
-      _type = WRSPPFNodeTypeSymbol;
+      _type = WRSPPFNodeTypeToken;
       _token = content;
     } else {
       _type = WRSPPFNodeTypeIntermediate;
@@ -72,7 +72,7 @@
 - (NSString *)nodeStr {
   if (nil == _nodeStr) {
     NSString *str = nil;
-    if (self.type == WRSPPFNodeTypeSymbol) {
+    if (self.type == WRSPPFNodeTypeToken) {
       str = self.token;
     } else {
       str = self.item.dotedRule;
@@ -96,4 +96,15 @@
   return _families;
 }
 
+- (void)accept:(WRVisitor *)visitor {
+  assert(self.families.count <= 1);
+  if ([visitor isKindOfClass:[WRTreeVisitor class]]) {
+    WRTreeVisitor *treeVisitor = (WRTreeVisitor *) visitor;
+    NSArray *children = self.families.count ? [self.families firstObject] : nil;
+    [treeVisitor visit:self
+          withChildren:children];
+  } else {
+    [visitor visit:self];
+  }
+}
 @end

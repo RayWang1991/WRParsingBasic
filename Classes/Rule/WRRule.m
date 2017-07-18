@@ -5,6 +5,8 @@
  */
 
 #import "WRRule.h"
+#import "WRTerminal.h"
+#import "WRNonterminal.h"
 
 @interface WRRule ()
 @property (nonatomic, strong, readwrite) NSString *ruleStr;
@@ -179,6 +181,21 @@ typedef NS_ENUM(NSInteger, WRRuleCharType) {
   }
 
   _rightTokens = words;
+}
+
+- (NSMutableArray <WRToken *> *)getRightTokenArrayUsingOrder:(NSEnumerationOptions)order{
+  NSMutableArray *array = [NSMutableArray arrayWithCapacity :self.rightTokens.count];
+    [self.rightTokens enumerateObjectsWithOptions:order
+                                       usingBlock:^(NSString *token, NSUInteger index, BOOL *stop){
+    WRToken *tokenToAdd;
+    if(token.tokenTypeForString == terminal){
+      tokenToAdd = [WRTerminal tokenWithSymbol:token];
+    } else {
+      tokenToAdd = [WRNonterminal tokenWithSymbol:token];
+    }
+    [array addObject:tokenToAdd];
+                                       }];
+  return array;
 }
 
 - (NSString *)ruleStr {

@@ -5,6 +5,8 @@
  */
 
 #import "WRLanguage.h"
+#import "WRLanguageCF_EAC_3_4_RR.h"
+
 @interface WRLanguage ()
 @property (nonatomic, strong, readwrite) NSMutableSet *nullableSymbolSet;
 // LL(1) parsing use
@@ -19,12 +21,9 @@
 - (instancetype)initWithRuleStrings:(NSArray <NSString *> *)rules
                      andStartSymbol:(NSString *)startSymbol {
   if (self = [super init]) {
-    _grammars = [WRLanguage grammarWithRules:rules];
-
-    _nonterminals = [NSSet setWithArray:[_grammars allKeys]];
+    [self setUpWithRules:rules];
     _startSymbol = startSymbol;
     [self labelRuleIndex];
-    [self addNonTerminalandTerminals];
     [self disposeNullableToken];
   }
   return self;
@@ -38,6 +37,54 @@
       @"Factor -> ( Expr )",
       @"Factor -> i"]
                             andStartSymbol:@"Expr"];
+}
+
+- (void)setUpWithRules:(NSArray <NSString *> *)rules {
+  // grammars and nonterminals
+
+  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+  _grammars = dict;
+
+  _token2IdMapper = [NSMutableDictionary dictionary];
+  _nonterminalList = [NSMutableArray array];
+  _nonterminals = [NSMutableSet set];
+  NSInteger nonterminalId = 0;
+  for (NSString *ruleStr in rules) {
+    NSArray <WRRule *> *rules = [WRRule rulesWithOrRuleStr:ruleStr];
+    if (rules.count) {
+      NSString *nont = rules[0].leftToken;
+      if (![_nonterminals containsObject:nont]) {
+        [_nonterminalList addObject:nont];
+        [_nonterminals addObject:nont];
+        [_token2IdMapper setValue:@(nonterminalId)
+                           forKey:nont];
+        nonterminalId++;
+      }
+    }
+    for (WRRule *rule in rules) {
+      [WRLanguage addRule:rule
+                toGrammar:dict];
+    }
+  }
+
+  // terminals
+  NSInteger terminalId = 0;
+  _terminalList = [NSMutableArray array];
+  _terminals = [NSMutableSet set];
+
+  for (NSArray *rules in self.grammars.allValues) {
+    for (WRRule *rule in rules) {
+      for (NSString *token in rule.rightTokens) {
+        if ([token tokenTypeForString] == terminal && ![_terminals containsObject:token]) {
+          [_terminals addObject:token];
+          [_terminalList addObject:token];
+          [_token2IdMapper setValue:@(terminalId)
+                             forKey:token];
+          terminalId++;
+        }
+      }
+    }
+  }
 }
 
 + (NSDictionary <NSString *, NSArray <WRRule *> *> *)grammarWithRules:(NSArray <NSString *> *)rules {
@@ -180,14 +227,15 @@
 }
 
 + (WRLanguage *)CFGrammar_EAC_3_4_RR { // right recursive
-  return [[self alloc] initWithRuleStrings:@[
-      @"Goal -> Expr",
-      @"Expr -> Term Expr'",
-      @"Expr' -> + Term Expr'| - Term Expr' | ",
-      @"Term -> Factor Term'",
-      @"Term' -> × Factor Term'| ÷ Factor Term' | ",
-      @"Factor -> ( Expr )| num | name"]
-                            andStartSymbol:@"Goal"];
+//  return [[self alloc] initWithRuleStrings:@[
+//      @"Goal -> Expr",
+//      @"Expr -> Term Expr'",
+//      @"Expr' -> + Term Expr'| - Term Expr' | ",
+//      @"Term -> Factor Term'",
+//      @"Term' -> × Factor Term'| ÷ Factor Term' | ",
+//      @"Factor -> ( Expr )| num | name"]
+//                            andStartSymbol:@"Goal"];
+  return [[WRLanguageCF_EAC_3_4_RR alloc] init];
 }
 
 #pragma mark label index for rules

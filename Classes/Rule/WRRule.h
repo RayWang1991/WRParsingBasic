@@ -6,6 +6,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NSString + WRToken.h"
+#import "WRToken.h"
 
 @interface WRRule : NSObject <NSObject>
 
@@ -18,6 +19,8 @@
 + (instancetype)ruleWithRuleStr:(NSString *)ruleStr;
 - (instancetype)initWithRule:(WRRule *)rule;
 + (instancetype)ruleWithRule:(WRRule *)rule;
+
+- (NSMutableArray <WRToken *> *)getRightTokenArrayUsingOrder:(NSEnumerationOptions)order;
 
 // The "A -> a1 | b2" grammar is recommanded
 + (NSArray <WRRule *> *)rulesWithOrRuleStr:(NSString *)ruleStr;

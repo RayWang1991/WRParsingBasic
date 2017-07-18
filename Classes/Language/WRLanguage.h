@@ -5,8 +5,13 @@
  */
 
 #import "Foundation/Foundation.h"
-#import "WRToken.h"
+#import "WRTerminal.h"
+#import "WRNonterminal.h"
 #import "WRRule.h"
+#import "WRAST.h"
+
+// TODO
+// 为了方便构造AST，建议所有language都从父类继承，并重写ASTForToken方法
 
 @interface WRLanguage : NSObject
 @property(nonatomic, strong, readwrite) NSString *startSymbol;
@@ -19,6 +24,7 @@
 
 @property(nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *>*>*grammars;
 
+// used by subclass
 - (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules
                      andStartSymbol:(NSString *)startSymbol;
 
@@ -43,8 +49,12 @@
 - (NSSet <NSString *> *)firstPlusSetForToken:(NSString *)tokenSymbol
                                 andRuleIndex:(NSInteger)index;
 
+// call when the parse tree is constructed to build AST tree
+// should be implemented by subclass
+- (WRAST *)astNodeForToken:(WRToken *)token;
+
 /*
- * Basic CF Grammar
+ *  CF Grammar Factory methods
  */
 
 + (WRLanguage *)CFGrammar4_1;
@@ -72,6 +82,7 @@
 + (WRLanguage *)CFGrammar_Test_First_1;
 
 + (WRLanguage *)CFGrammar_EAC_3_4_RR; // right recursive variant of the classic expression grammar, LL1
+
 
 
 @end

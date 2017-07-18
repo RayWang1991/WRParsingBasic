@@ -16,4 +16,9 @@
   return self;
 }
 
+//copy properties
+- (void)copyWithTerminal:(WRTerminal *)other{
+  _contentInfo = other.contentInfo;
+  _value = other.value;
+}
 @end

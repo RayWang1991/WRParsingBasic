@@ -29,3 +29,12 @@
 // utils
 #import "WRUtils.h"
 #import "WRSPPFNode.h" 
+
+// visitor
+#import "WRVisitor.h"
+#import "WRTreeLispStylePrinter.h"
+#import "WRTreeHorizontalDashStylePrinter.h"
+
+// AST
+#import "WRTreePattern.h"
+#import "WRTreePatternMatcher.h"

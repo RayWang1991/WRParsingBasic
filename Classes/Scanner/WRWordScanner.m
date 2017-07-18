@@ -47,8 +47,15 @@ typedef NS_ENUM(NSInteger, WRWordScannerState) {
   self.tokenIndex = 0;
 }
 
+- (WRTerminal *)tokenAtIndex:(NSInteger)index {
+  if (index < 0 || index + 1 > self.tokens.count) {
+    return nil;
+  }
+  return self.tokens[index];
+}
+
 // TODO simplify here
-- (WRTerminal *)nextToken{
+- (WRTerminal *)nextToken {
   assert(self.tokenIndex <= self.tokens.count);
 
   if (self.tokenIndex < self.tokens.count) {
@@ -257,6 +264,7 @@ typedef NS_ENUM(NSInteger, WRWordScannerState) {
   // must be terminal
   WRTerminal *token = [WRTerminal tokenWithSymbol:symbol];
   token.contentInfo = contentInfo;
+  token.terminalType = self.language.token2IdMapper[symbol].integerValue;
   [self.tokens addObject:token];
 }
 
@@ -268,14 +276,13 @@ typedef NS_ENUM(NSInteger, WRWordScannerState) {
   [self startScan];
   [self scanToEnd];
   assert(self.tokens.count == 7);
-  assert(wrCheckTerminal(self.tokens[0],@"this",4,0,3));
-  assert(wrCheckTerminal(self.tokens[1],@"is",2,0,9));
-  assert(wrCheckTerminal(self.tokens[2],@"ab",2,1,2));
-  assert(wrCheckTerminal(self.tokens[3],@"test",4,1,7));
-  assert(wrCheckTerminal(self.tokens[4],@"123",3,3,2));
-  assert(wrCheckTerminal(self.tokens[5],@"456",3,3,7));
+  assert(wrCheckTerminal(self.tokens[0], @"this", 4, 0, 3));
+  assert(wrCheckTerminal(self.tokens[1], @"is", 2, 0, 9));
+  assert(wrCheckTerminal(self.tokens[2], @"ab", 2, 1, 2));
+  assert(wrCheckTerminal(self.tokens[3], @"test", 4, 1, 7));
+  assert(wrCheckTerminal(self.tokens[4], @"123", 3, 3, 2));
+  assert(wrCheckTerminal(self.tokens[5], @"456", 3, 3, 7));
 }
-
 
 
 @end

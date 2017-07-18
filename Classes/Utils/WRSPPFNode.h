@@ -7,13 +7,14 @@
 #import <Foundation/Foundation.h>
 #import "WRToken.h"
 #import "WRRule.h"
+#import "WRTreeVisitor.h"
 
 typedef NS_ENUM(NSInteger, WRSPPFNodeType){
-  WRSPPFNodeTypeSymbol,
+  WRSPPFNodeTypeToken,
   WRSPPFNodeTypeIntermediate //items
 };
 
-@interface WRSPPFNode : NSObject
+@interface WRSPPFNode : NSObject <WRVisiteeProtocol>
 
 @property (nonatomic, assign, readwrite) WRSPPFNodeType type;
 @property (nonatomic, strong, readwrite) WRRule *item;
@@ -34,4 +35,5 @@ typedef NS_ENUM(NSInteger, WRSPPFNodeType){
 // the parameter familyArray's count should > 0
 - (BOOL)containsFamilly:(NSArray <WRSPPFNode *>*)familyArray;
 
+- (void)accept:(WRVisitor *)visitor;
 @end

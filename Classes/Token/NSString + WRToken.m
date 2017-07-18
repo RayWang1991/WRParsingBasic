@@ -13,7 +13,7 @@ NSString *const WREpsilonTokenSymbol = @"epsilon";
 
 - (WRTokenType)tokenTypeForString{
   if(!self.length){
-    // should not be actually
+    // should not be 0 length actually
     // reserved for epsilon
     return terminal;
   }

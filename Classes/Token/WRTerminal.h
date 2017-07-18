@@ -20,6 +20,9 @@ typedef struct{
 } WRTerminalContentInfo;
 
 @property(nonatomic, assign, readwrite) WRTerminalContentInfo contentInfo;
+@property(nonatomic, assign, readwrite) NSInteger terminalType;
 @property(nonatomic, strong, readwrite) NSString *value;
+
+- (void)copyWithTerminal:(WRTerminal *)other;
 
 @end

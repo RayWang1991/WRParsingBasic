@@ -25,4 +25,10 @@
   return self.symbol;
 }
 
+
+#pragma visitor protocol
+- (void)accept:(WRVisitor *)visitor{
+  [visitor visit:self];
+}
+
 @end
