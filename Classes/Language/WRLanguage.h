@@ -53,6 +53,9 @@
 // should be implemented by subclass
 - (WRAST *)astNodeForToken:(WRToken *)token;
 
+// to add virtual node
+- (void)addVirtualTerminal:(NSString *)virtualTerminal;
+
 /*
  *  CF Grammar Factory methods
  */
@@ -82,6 +85,7 @@
 + (WRLanguage *)CFGrammar_Test_First_1;
 
 + (WRLanguage *)CFGrammar_EAC_3_4_RR; // right recursive variant of the classic expression grammar, LL1
+
 
 
 

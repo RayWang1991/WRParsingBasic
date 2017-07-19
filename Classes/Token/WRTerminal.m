@@ -11,14 +11,19 @@
 //override
 - (instancetype)initWithSymbol:(NSString *)symbol{
   if(self = [super initWithSymbol:symbol]){
-    self.type = terminal;
+    self.type = WRTokenTypeTerminal;
   }
   return self;
 }
 
+- (NSString *)description {
+  return _value ? _value : [super description];
+}
 //copy properties
 - (void)copyWithTerminal:(WRTerminal *)other{
   _contentInfo = other.contentInfo;
   _value = other.value;
 }
+
+
 @end

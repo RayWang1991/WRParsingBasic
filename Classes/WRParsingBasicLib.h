@@ -38,3 +38,5 @@
 // AST
 #import "WRTreePattern.h"
 #import "WRTreePatternMatcher.h"
+#import "WRAST.h"
+#import "WRASTBuilder.h"

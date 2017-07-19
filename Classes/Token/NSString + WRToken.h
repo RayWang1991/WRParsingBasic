@@ -10,8 +10,8 @@ extern NSString *const WREndOfFileTokenSymbol;
 extern NSString *const WREpsilonTokenSymbol;
 
 typedef NS_ENUM(NSInteger, WRTokenType){
-  terminal,
-  nonTerminal
+  WRTokenTypeTerminal,
+  WRTokenTypeNonterminal
 };
 
 @interface NSString (WRToken)

@@ -7,6 +7,11 @@
 #import <Foundation/Foundation.h>
 @class WRTerminal;
 
+typedef NS_ENUM(NSInteger,WRArrayOrder){
+  WRArrayOrderNormal,
+  WRArrayOrderReverse,
+};
+
 @interface WRUtils : NSObject
 + (NSString *)debugStrWithTabs:(NSUInteger)tabNumber
                      forString:(NSString *)str;

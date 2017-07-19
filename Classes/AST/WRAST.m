@@ -26,6 +26,11 @@
   return self.terminal.description;
 }
 
+- (void)addChild:(WRAST *)child{
+  [_children addObject:child];
+}
+
+
 - (void)accept:(WRVisitor *)visitor {
   if ([visitor isKindOfClass:[WRTreeVisitor class]]) {
     WRTreeVisitor *treeVisitor = (WRTreeVisitor *) visitor;

@@ -75,7 +75,7 @@
   for (NSArray *rules in self.grammars.allValues) {
     for (WRRule *rule in rules) {
       for (NSString *token in rule.rightTokens) {
-        if ([token tokenTypeForString] == terminal && ![_terminals containsObject:token]) {
+        if ([token tokenTypeForString] == WRTokenTypeTerminal && ![_terminals containsObject:token]) {
           [_terminals addObject:token];
           [_terminalList addObject:token];
           [_token2IdMapper setValue:@(terminalId)
@@ -272,7 +272,7 @@
   for (NSArray *rules in self.grammars.allValues) {
     for (WRRule *rule in rules) {
       for (NSString *token in rule.rightTokens) {
-        if ([token tokenTypeForString] == terminal && ![_terminals containsObject:token]) {
+        if ([token tokenTypeForString] == WRTokenTypeTerminal && ![_terminals containsObject:token]) {
           [_terminals addObject:token];
           [_terminalList addObject:token];
           [_token2IdMapper setValue:@(terminalId)
@@ -284,6 +284,17 @@
   }
 }
 
+- (void)addVirtualTerminal:(NSString *)virtualTerminal {
+  NSInteger n = self.terminalList.count;
+  [self.terminalList addObject:virtualTerminal];
+  [self.token2IdMapper setValue:@(n + 1)
+                         forKey:virtualTerminal];
+}
+
+- (WRAST *)astNodeForToken:(WRToken *)token{
+  // should be implemented by subclass
+  return nil;
+}
 # pragma mark Nullable function
 - (void)disposeNullableToken {
   // initiate
@@ -427,7 +438,7 @@
       [rule.rightTokens
         enumerateObjectsWithOptions:NSEnumerationReverse
                          usingBlock:^(NSString *_Nonnull token, NSUInteger idx, BOOL *_Nonnull stop) {
-                           if ([token tokenTypeForString] == terminal) {
+                           if ([token tokenTypeForString] == WRTokenTypeTerminal) {
                              [firstSet removeAllObjects];
                              [firstSet addObject:token];
                              tailToken = nil;

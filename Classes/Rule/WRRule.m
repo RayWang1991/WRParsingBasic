@@ -183,18 +183,36 @@ typedef NS_ENUM(NSInteger, WRRuleCharType) {
   _rightTokens = words;
 }
 
-- (NSMutableArray <WRToken *> *)getRightTokenArrayUsingOrder:(NSEnumerationOptions)order{
+- (NSMutableArray <WRToken *> *)getRightTokenArrayUsingOrder:(WRArrayOrder)order{
   NSMutableArray *array = [NSMutableArray arrayWithCapacity :self.rightTokens.count];
-    [self.rightTokens enumerateObjectsWithOptions:order
-                                       usingBlock:^(NSString *token, NSUInteger index, BOOL *stop){
-    WRToken *tokenToAdd;
-    if(token.tokenTypeForString == terminal){
-      tokenToAdd = [WRTerminal tokenWithSymbol:token];
-    } else {
-      tokenToAdd = [WRNonterminal tokenWithSymbol:token];
+  switch (order){
+    case WRArrayOrderNormal:{
+      for(NSString *token in self.rightTokens){
+        WRToken *tokenToAdd;
+        if(token.tokenTypeForString == WRTokenTypeTerminal){
+          tokenToAdd = [WRTerminal tokenWithSymbol:token];
+        } else {
+          tokenToAdd = [WRNonterminal tokenWithSymbol:token];
+        }
+        [array addObject:tokenToAdd];
+      }
+      break;
     }
-    [array addObject:tokenToAdd];
-                                       }];
+    case WRArrayOrderReverse:{
+      [self.rightTokens enumerateObjectsWithOptions:NSEnumerationReverse
+                                         usingBlock:^(NSString *token, NSUInteger index, BOOL *stop){
+                                           WRToken *tokenToAdd;
+                                           if(token.tokenTypeForString == WRTokenTypeTerminal){
+                                             tokenToAdd = [WRTerminal tokenWithSymbol:token];
+                                           } else {
+                                             tokenToAdd = [WRNonterminal tokenWithSymbol:token];
+                                           }
+                                           [array addObject:tokenToAdd];
+                                         }];
+      break;
+    }
+    default:break;
+  }
   return array;
 }
 

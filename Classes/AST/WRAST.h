@@ -21,6 +21,8 @@
 
 - (NSInteger)type;
 
+- (void)addChild:(WRAST *)child;
+
 - (void)accept:(WRVisitor *)visitor;
 
 @end

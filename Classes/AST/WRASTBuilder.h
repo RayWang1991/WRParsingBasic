@@ -10,8 +10,13 @@
 @class WRToken;
 @class WRLanguage;
 
-
-
 @interface WRASTBuilder : WRTreeVisitor
+@property (nonatomic, strong, readwrite) WRToken *startToken;
+@property (nonatomic, strong, readwrite) WRLanguage *language;
+
+- (instancetype)initWithStartToken:(WRToken *)startToken
+                       andLanguage:(WRLanguage *)language;
+
+- (WRAST *)ast;
 
 @end

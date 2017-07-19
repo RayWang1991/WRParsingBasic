@@ -12,7 +12,7 @@
 //override
 - (instancetype)initWithSymbol:(NSString *)symbol {
   if (self = [super initWithSymbol:symbol]) {
-    self.type = nonTerminal;
+    self.type = WRTokenTypeNonterminal;
   }
   return self;
 }

@@ -12,7 +12,7 @@
 @interface WRItem : WRRule
 
 @property (nonatomic, assign, readwrite) NSInteger dotPos;   // position of dot
-@property (nonatomic, assign, readwrite) NSInteger itemPos; // position in item set
+@property (nonatomic, assign, readwrite) NSInteger itemPos; // asking position in item set
 
 @property (nonatomic, strong, readwrite) NSString *dotedRule;
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, WRPair *> *reductionList;
