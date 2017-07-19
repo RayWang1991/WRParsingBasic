@@ -8,10 +8,10 @@
 #import "WRTerminal.h"
 const NSString *kWRLexerErrorDomain = @"WR.Error.Lexer";
 
-@interface WRLexer()
-@property(nonatomic, assign, readwrite) int currentLine;
-@property(nonatomic, assign, readwrite) int currentColumn;
-@property(nonatomic, assign, readwrite) int tokenBegin;
+@interface WRLexer ()
+@property (nonatomic, assign, readwrite) int currentLine;
+@property (nonatomic, assign, readwrite) int currentColumn;
+@property (nonatomic, assign, readwrite) int tokenBegin;
 @end
 
 @implementation WRLexer
@@ -478,7 +478,7 @@ typedef NS_ENUM(NSInteger, WRLexerState) {
 
 - (void)testOp {
   NSString *input =
-    TR(0 + 0 - +x / <<>= --asdfasdf
+    TR(0 + 0 - +x / << >= --asdfasdf
          e
          123f \n
          x-  -x\n

@@ -6,7 +6,7 @@
 
 #import "WRScanner.h"
 
-extern NSString const* kWRLexerErrorDomain;
+extern NSString const *kWRLexerErrorDomain;
 
 // a hand write lexer
 

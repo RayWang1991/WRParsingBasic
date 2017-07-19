@@ -7,7 +7,6 @@
 #import "WRItem.h"
 
 @interface WRItem ()
-
 @end
 
 @implementation WRItem
@@ -15,7 +14,7 @@
 - (instancetype)initWithRuleStr:(NSString *)ruleStr
                     dotPosition:(NSInteger)dotPosition
                 andItemPosition:(NSInteger)itemPosition {
-  
+
   if (self = [super initWithRuleStr:ruleStr]) {
     _dotPos = dotPosition;
     _itemPos = itemPosition;
@@ -69,8 +68,8 @@
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"%@ @%ld",
-          self.dotedRule,
-          self.itemPos];
+                                    self.dotedRule,
+                                    self.itemPos];
 }
 
 - (NSString *)descriptionForReductions {
@@ -80,7 +79,7 @@
   NSMutableString *string = [NSMutableString string];
   for (WRPair *pair in self.reductionList) {
     [string appendFormat:@"%@; ",
-     pair];
+                         pair];
   }
   [string appendString:@"\n"];
   return string;
@@ -93,7 +92,7 @@
   NSMutableString *string = [NSMutableString string];
   for (WRPair *pair in self.predecessorList) {
     [string appendFormat:@"%@; ",
-     pair];
+                         pair];
   }
   [string appendString:@"\n"];
   return string;
@@ -126,17 +125,19 @@
 - (NSString *)currentDotedRule {
   NSMutableString *mutStr = [NSMutableString stringWithString:self.leftToken];
   [mutStr appendString:@" ->"];
-  
+
   NSInteger i = 0;
-  for(NSString *token in self.rightTokens){
-    if(i == _dotPos){
-      [mutStr appendFormat:@" ·%@",token];
-    } else{
-      [mutStr appendFormat:@" %@",token];
+  for (NSString *token in self.rightTokens) {
+    if (i == _dotPos) {
+      [mutStr appendFormat:@" ·%@",
+                           token];
+    } else {
+      [mutStr appendFormat:@" %@",
+                           token];
     }
     i++;
   }
-  
+
   if (self.rightTokens.count == _dotPos) {
     [mutStr appendString:@"·"];
   }

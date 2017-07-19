@@ -79,9 +79,9 @@
             WRTerminal *op = children[0];
             WRToken *term = children[1];
             WRToken *expr_ = children[2];
-            
+
             [term accept:self];
-            
+
             WRAST *ast = [[WRAST alloc] initWithWRTerminal:op];
 
             [ast.children addObject:nonterminal.inhAttr];
@@ -117,7 +117,7 @@
             WRTerminal *op = children[0];
             WRToken *factor = children[1];
             WRToken *term_ = children[2];
-            
+
             [factor accept:self];
             WRAST *ast = [[WRAST alloc] initWithWRTerminal:op];
 

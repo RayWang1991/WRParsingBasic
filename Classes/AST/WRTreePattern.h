@@ -6,19 +6,19 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, WRTreePatternMatchActionType){
+typedef NS_ENUM(NSInteger, WRTreePatternMatchActionType) {
   WRTreePatternMatchActionMatch,
   WRTreePatternMatchActionGoDown,
   WRTreePatternMatchActionGoUp,
 };
 
 @interface WRTreePatternAction : NSObject
-@property(nonatomic, assign, readwrite)WRTreePatternMatchActionType type;
+@property (nonatomic, assign, readwrite) WRTreePatternMatchActionType type;
 @end
 
 @interface WRTreePatternMatchAction : WRTreePatternAction
-@property(nonatomic, strong, readwrite)NSString *symbol;
-@property(nonatomic, assign, readwrite)NSInteger nodeId;
+@property (nonatomic, strong, readwrite) NSString *symbol;
+@property (nonatomic, assign, readwrite) NSInteger nodeId;
 @end
 
 @interface WRTreePattern : NSObject

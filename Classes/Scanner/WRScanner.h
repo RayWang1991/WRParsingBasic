@@ -11,10 +11,10 @@
 //deprecated, use WRWordScanner
 
 @interface WRScanner : NSObject
-@property(nonatomic, strong, readwrite)NSMutableArray <WRTerminal *>*tokens;
-@property(nonatomic, strong, readwrite)NSMutableArray <NSError *>*errors;
-@property(nonatomic, assign, readwrite)NSInteger tokenIndex;
-@property(nonatomic, strong, readwrite)NSString *inputStr;
+@property (nonatomic, strong, readwrite) NSMutableArray <WRTerminal *> *tokens;
+@property (nonatomic, strong, readwrite) NSMutableArray <NSError *> *errors;
+@property (nonatomic, assign, readwrite) NSInteger tokenIndex;
+@property (nonatomic, strong, readwrite) NSString *inputStr;
 
 - (void)startScan;
 

@@ -12,16 +12,16 @@
  */
 @interface WRTerminal : WRToken
 
-typedef struct{
+typedef struct {
   // start position
   NSInteger line;
   NSInteger column;
   NSInteger length;
 } WRTerminalContentInfo;
 
-@property(nonatomic, assign, readwrite) WRTerminalContentInfo contentInfo;
-@property(nonatomic, assign, readwrite) NSInteger terminalType;
-@property(nonatomic, strong, readwrite) NSString *value;
+@property (nonatomic, assign, readwrite) WRTerminalContentInfo contentInfo;
+@property (nonatomic, assign, readwrite) NSInteger terminalType;
+@property (nonatomic, strong, readwrite) NSString *value;
 
 - (void)copyWithTerminal:(WRTerminal *)other;
 

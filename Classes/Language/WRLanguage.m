@@ -291,7 +291,7 @@
                          forKey:virtualTerminal];
 }
 
-- (WRAST *)astNodeForToken:(WRToken *)token{
+- (WRAST *)astNodeForToken:(WRToken *)token {
   // should be implemented by subclass
   return nil;
 }

@@ -12,8 +12,8 @@
 
 @interface WRNonterminal : WRToken
 
-@property(nonatomic, strong, readwrite) NSString *symbol;
-@property(nonatomic, readwrite, readwrite) NSInteger ruleIndex;
-@property(nonatomic, strong, readwrite) NSArray <WRToken *>*children;
+@property (nonatomic, strong, readwrite) NSString *symbol;
+@property (nonatomic, readwrite, readwrite) NSInteger ruleIndex;
+@property (nonatomic, strong, readwrite) NSArray <WRToken *> *children;
 
 @end

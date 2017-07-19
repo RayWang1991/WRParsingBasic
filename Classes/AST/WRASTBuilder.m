@@ -9,15 +9,15 @@
 
 @implementation WRASTBuilder
 - (instancetype)initWithStartToken:(WRToken *)startToken
-                       andLanguage:(WRLanguage *)language{
-  if( self = [super init]){
+                       andLanguage:(WRLanguage *)language {
+  if (self = [super init]) {
     _language = language;
     _startToken = startToken;
   }
   return self;
 }
 
-- (WRAST *)ast{
+- (WRAST *)ast {
   return self.startToken.synAttr;
 }
 @end

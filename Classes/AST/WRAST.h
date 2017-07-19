@@ -12,10 +12,10 @@
 /**
  * base class for AST node (can also be used as Isomorphic AST node)
  */
-@interface WRAST : NSObject <WRVisiteeProtocol>
+@interface WRAST : NSObject<WRVisiteeProtocol>
 
-@property(nonatomic, strong, readwrite) WRTerminal *terminal;
-@property(nonatomic, strong, readwrite) NSMutableArray<WRAST *> *children;
+@property (nonatomic, strong, readwrite) WRTerminal *terminal;
+@property (nonatomic, strong, readwrite) NSMutableArray<WRAST *> *children;
 
 - (instancetype)initWithWRTerminal:(WRTerminal *)terminal;
 

@@ -183,13 +183,13 @@ typedef NS_ENUM(NSInteger, WRRuleCharType) {
   _rightTokens = words;
 }
 
-- (NSMutableArray <WRToken *> *)getRightTokenArrayUsingOrder:(WRArrayOrder)order{
-  NSMutableArray *array = [NSMutableArray arrayWithCapacity :self.rightTokens.count];
-  switch (order){
-    case WRArrayOrderNormal:{
-      for(NSString *token in self.rightTokens){
+- (NSMutableArray <WRToken *> *)getRightTokenArrayUsingOrder:(WRArrayOrder)order {
+  NSMutableArray *array = [NSMutableArray arrayWithCapacity:self.rightTokens.count];
+  switch (order) {
+    case WRArrayOrderNormal: {
+      for (NSString *token in self.rightTokens) {
         WRToken *tokenToAdd;
-        if(token.tokenTypeForString == WRTokenTypeTerminal){
+        if (token.tokenTypeForString == WRTokenTypeTerminal) {
           tokenToAdd = [WRTerminal tokenWithSymbol:token];
         } else {
           tokenToAdd = [WRNonterminal tokenWithSymbol:token];
@@ -198,11 +198,11 @@ typedef NS_ENUM(NSInteger, WRRuleCharType) {
       }
       break;
     }
-    case WRArrayOrderReverse:{
+    case WRArrayOrderReverse: {
       [self.rightTokens enumerateObjectsWithOptions:NSEnumerationReverse
-                                         usingBlock:^(NSString *token, NSUInteger index, BOOL *stop){
+                                         usingBlock:^(NSString *token, NSUInteger index, BOOL *stop) {
                                            WRToken *tokenToAdd;
-                                           if(token.tokenTypeForString == WRTokenTypeTerminal){
+                                           if (token.tokenTypeForString == WRTokenTypeTerminal) {
                                              tokenToAdd = [WRTerminal tokenWithSymbol:token];
                                            } else {
                                              tokenToAdd = [WRNonterminal tokenWithSymbol:token];

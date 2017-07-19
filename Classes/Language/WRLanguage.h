@@ -14,18 +14,18 @@
 // 为了方便构造AST，建议所有language都从父类继承，并重写ASTForToken方法
 
 @interface WRLanguage : NSObject
-@property(nonatomic, strong, readwrite) NSString *startSymbol;
-@property(nonatomic, strong, readwrite) NSMutableSet <NSString *>*terminals;
-@property(nonatomic, strong, readwrite) NSMutableSet <NSString *>*nonterminals;
+@property (nonatomic, strong, readwrite) NSString *startSymbol;
+@property (nonatomic, strong, readwrite) NSMutableSet <NSString *> *terminals;
+@property (nonatomic, strong, readwrite) NSMutableSet <NSString *> *nonterminals;
 
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSNumber *> *token2IdMapper;
 @property (nonatomic, strong, readwrite) NSMutableArray <NSString *> *nonterminalList;
-@property (nonatomic, strong, readwrite) NSMutableArray <NSString *> *terminalList; 
+@property (nonatomic, strong, readwrite) NSMutableArray <NSString *> *terminalList;
 
-@property(nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *>*>*grammars;
+@property (nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *> *> *grammars;
 
 // used by subclass
-- (instancetype)initWithRuleStrings:(NSArray <NSString *>*)rules
+- (instancetype)initWithRuleStrings:(NSArray <NSString *> *)rules
                      andStartSymbol:(NSString *)startSymbol;
 
 // call when needed, constuct LL(1) parser

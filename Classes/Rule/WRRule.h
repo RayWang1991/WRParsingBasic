@@ -9,7 +9,7 @@
 #import "WRToken.h"
 #import "WRUtils.h"
 
-@interface WRRule : NSObject <NSObject>
+@interface WRRule : NSObject<NSObject>
 
 @property (nonatomic, assign, readwrite) NSInteger ruleIndex;
 @property (nonatomic, strong, readonly) NSString *ruleStr;

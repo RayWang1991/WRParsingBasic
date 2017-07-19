@@ -131,7 +131,7 @@ typedef NS_ENUM(NSInteger, WRTreePatthenState) {
   WRTreePatternMatchAction *action = [[WRTreePatternMatchAction alloc] init];
   action.symbol = symbol;
   [_actions addObject:action];
-  if(hasGoDown){
+  if (hasGoDown) {
     WRTreePatternAction *goDown = [[WRTreePatternAction alloc] init];
     goDown.type = WRTreePatternMatchActionGoDown;
     [_actions addObject:goDown];

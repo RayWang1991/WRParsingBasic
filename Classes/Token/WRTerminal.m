@@ -9,8 +9,8 @@
 @implementation WRTerminal
 
 //override
-- (instancetype)initWithSymbol:(NSString *)symbol{
-  if(self = [super initWithSymbol:symbol]){
+- (instancetype)initWithSymbol:(NSString *)symbol {
+  if (self = [super initWithSymbol:symbol]) {
     self.type = WRTokenTypeTerminal;
   }
   return self;
@@ -20,7 +20,7 @@
   return _value ? _value : [super description];
 }
 //copy properties
-- (void)copyWithTerminal:(WRTerminal *)other{
+- (void)copyWithTerminal:(WRTerminal *)other {
   _contentInfo = other.contentInfo;
   _value = other.value;
 }

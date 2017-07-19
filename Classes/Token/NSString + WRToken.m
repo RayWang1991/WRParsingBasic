@@ -11,15 +11,15 @@ NSString *const WREpsilonTokenSymbol = @"epsilon";
 
 @implementation NSString (WRToken)
 
-- (WRTokenType)tokenTypeForString{
-  if(!self.length){
+- (WRTokenType)tokenTypeForString {
+  if (!self.length) {
     // should not be 0 length actually
     // reserved for epsilon
     return WRTokenTypeTerminal;
   }
   unichar firstChar = [self characterAtIndex:0];
   WRTokenType type = [[NSCharacterSet uppercaseLetterCharacterSet]
-                      characterIsMember:firstChar] ? WRTokenTypeNonterminal: WRTokenTypeTerminal;
+    characterIsMember:firstChar] ? WRTokenTypeNonterminal : WRTokenTypeTerminal;
   return type;
 }
 

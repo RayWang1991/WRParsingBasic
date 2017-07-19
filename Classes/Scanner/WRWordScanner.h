@@ -8,7 +8,7 @@
 #import "WRLanguage.h"
 
 @interface WRWordScanner : WRScanner
-@property(nonatomic, strong, readwrite)WRLanguage *language; // use to label the terminal type
+@property (nonatomic, strong, readwrite) WRLanguage *language; // use to label the terminal type
 
 - (void)setNumOfEof:(NSInteger)num;
 

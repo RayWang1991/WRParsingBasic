@@ -41,14 +41,15 @@
              andItemPosition:(NSInteger)itemPosition;
 
 // copy item and set the position of item set
-- (instancetype)initWithItem:(WRItem *)item andItemPosition:(NSInteger)position;
+- (instancetype)initWithItem:(WRItem *)item
+             andItemPosition:(NSInteger)position;
 
-+ (instancetype)itemWithItem:(WRItem *)item andItemPosition:(NSInteger)position;
++ (instancetype)itemWithItem:(WRItem *)item
+             andItemPosition:(NSInteger)position;
 
 - (NSString *)descriptionForReductions;
 
 - (NSString *)descriptionForPredecessors;
-
 
 /**
  * Functional Methods
