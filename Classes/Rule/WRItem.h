@@ -12,7 +12,8 @@
 @interface WRItem : WRRule
 
 @property (nonatomic, assign, readwrite) NSInteger dotPos;   // position of dot
-@property (nonatomic, assign, readwrite) NSInteger itemPos; // asking position in item set
+@property (nonatomic, assign, readwrite) NSInteger askPos; // asking position in item set
+@property (nonatomic, assign, readwrite) NSInteger fromIndex; // index of item set
 
 @property (nonatomic, strong, readwrite) NSString *dotedRule;
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, WRPair *> *reductionList;
@@ -25,27 +26,27 @@
 // basic init methods
 - (instancetype)initWithRuleStr:(NSString *)ruleStr
                     dotPosition:(NSInteger)dotPosition
-                andItemPosition:(NSInteger)itemPosition;
+                 askingPosition:(NSInteger)askPosition;
 
 + (instancetype)itemWithRuleStr:(NSString *)ruleStr
                     dotPosition:(NSInteger)dotPosition
-                andItemPosition:(NSInteger)itemPosition;
+                 askingPosition:(NSInteger)askPosition;
 
 // copy rule and set dot||item position
 - (instancetype)initWithRule:(WRRule *)rule
                  dotPosition:(NSInteger)dotPosition
-             andItemPosition:(NSInteger)itemPosition;
+              askingPosition:(NSInteger)askPosition;
 
 + (instancetype)itemWithRule:(WRRule *)rule
                  dotPosition:(NSInteger)dotPosition
-             andItemPosition:(NSInteger)itemPosition;
+              askingPosition:(NSInteger)askPosition;
 
 // copy item and set the position of item set
 - (instancetype)initWithItem:(WRItem *)item
-             andItemPosition:(NSInteger)position;
+              askingPosition:(NSInteger)position;
 
 + (instancetype)itemWithItem:(WRItem *)item
-             andItemPosition:(NSInteger)position;
+              askingPosition:(NSInteger)askPosition;
 
 - (NSString *)descriptionForReductions;
 

@@ -13,30 +13,30 @@
 
 - (instancetype)initWithRuleStr:(NSString *)ruleStr
                     dotPosition:(NSInteger)dotPosition
-                andItemPosition:(NSInteger)itemPosition {
+                 askingPosition:(NSInteger)askPosition {
 
   if (self = [super initWithRuleStr:ruleStr]) {
     _dotPos = dotPosition;
-    _itemPos = itemPosition;
+    _askPos = askPosition;
   }
   return self;
 }
 
 + (instancetype)itemWithRuleStr:(NSString *)ruleStr
                     dotPosition:(NSInteger)dotPosition
-                andItemPosition:(NSInteger)itemPosition {
+                 askingPosition:(NSInteger)askPosition {
   WRItem *item = [[WRItem alloc] initWithRuleStr:ruleStr
                                      dotPosition:dotPosition
-                                 andItemPosition:itemPosition];
+                                  askingPosition:askPosition];
   return item;
 }
 
 - (instancetype)initWithRule:(WRRule *)rule
                  dotPosition:(NSInteger)dotPosition
-             andItemPosition:(NSInteger)itemPosition {
+              askingPosition:(NSInteger)askPosition {
   if (self = [super initWithRule:rule]) {
     _dotPos = dotPosition;
-    _itemPos = itemPosition;
+    _askPos = askPosition;
     self.ruleIndex = rule.ruleIndex;
   }
   return self;
@@ -44,32 +44,32 @@
 
 + (instancetype)itemWithRule:(WRRule *)rule
                  dotPosition:(NSInteger)dotPosition
-             andItemPosition:(NSInteger)itemPosition {
+              askingPosition:(NSInteger)askPosition {
   return [[WRItem alloc] initWithRule:rule
                           dotPosition:dotPosition
-                      andItemPosition:itemPosition];
+                       askingPosition:askPosition];
 }
 
 - (instancetype)initWithItem:(WRItem *)item
-             andItemPosition:(NSInteger)itemPosition {
+              askingPosition:(NSInteger)askPosition {
   if (self = [super initWithRule:item]) {
     _dotPos = item.dotPos;
-    _itemPos = itemPosition;
+    _askPos = askPosition;
     self.ruleIndex = item.ruleIndex;
   }
   return self;
 }
 
 + (instancetype)itemWithItem:(WRItem *)item
-             andItemPosition:(NSInteger)position {
+              askingPosition:(NSInteger)askPosition {
   return [[WRItem alloc] initWithItem:item
-                      andItemPosition:position];
+                       askingPosition:askPosition];
 }
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"%@ @%ld",
                                     self.dotedRule,
-                                    self.itemPos];
+                                    self.askPos];
 }
 
 - (NSString *)descriptionForReductions {
