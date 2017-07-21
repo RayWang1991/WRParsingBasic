@@ -22,6 +22,10 @@
   printf("%s\n", self.result.UTF8String);
 }
 
+- (void)reset {
+  [_result deleteCharactersInRange:NSMakeRange(0, _result.length)];
+}
+
 - (void)visit:(id<WRVisiteeProtocol>)visitee
  withChildren:(NSArray<id<WRVisiteeProtocol>> *)children {
   if (visitee == nil) {

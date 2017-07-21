@@ -28,6 +28,10 @@
   printf("%s", _result.UTF8String);
 }
 
+- (void)reset {
+  [_result deleteCharactersInRange:NSMakeRange(0, _result.length)];
+}
+
 - (void)visit:(id<WRVisiteeProtocol>)visitee
  withChildren:(NSArray<id<WRVisiteeProtocol>> *)children {
   _level++;
@@ -39,17 +43,21 @@
   // print node
   for (NSInteger i = 0; i <= _level; i++) {
     if (i == _level) {
-      [_result appendFormat:@"%@\n",visitee];
+      [_result appendFormat:@"%@\n",
+                            visitee];
 //      printf("%s\n", visitee.description.UTF8String);
     } else if (i == _level - 1) {
-      [_result appendFormat:@"%-8s", @"+-------".UTF8String];
+      [_result appendFormat:@"%-8s",
+                            @"+-------".UTF8String];
 //      printf("%-8s", "+-------");
     } else if (_hasSibling[i].boolValue) {
-      [_result appendFormat:@"%-8s", @"|".UTF8String];
+      [_result appendFormat:@"%-8s",
+                            @"|".UTF8String];
 //      printf("%-8s", "|");
     } else {
 //      printf("%-8s", " ");
-      [_result appendFormat:@"%-8s", @" ".UTF8String];
+      [_result appendFormat:@"%-8s",
+                            @" ".UTF8String];
     }
   }
 

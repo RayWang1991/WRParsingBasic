@@ -18,4 +18,5 @@
 
 - (void)print;
 
+- (void)reset;
 @end

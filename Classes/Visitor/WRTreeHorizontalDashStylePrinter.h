@@ -12,4 +12,6 @@
  withChildren:(NSArray<id<WRVisiteeProtocol>> *)children;
 
 - (void)print;
+
+- (void)reset;
 @end
