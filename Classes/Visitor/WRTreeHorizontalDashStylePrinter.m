@@ -45,17 +45,13 @@
     if (i == _level) {
       [_result appendFormat:@"%@\n",
                             visitee];
-//      printf("%s\n", visitee.description.UTF8String);
     } else if (i == _level - 1) {
       [_result appendFormat:@"%-8s",
                             @"+-------".UTF8String];
-//      printf("%-8s", "+-------");
     } else if (_hasSibling[i].boolValue) {
       [_result appendFormat:@"%-8s",
                             @"|".UTF8String];
-//      printf("%-8s", "|");
     } else {
-//      printf("%-8s", " ");
       [_result appendFormat:@"%-8s",
                             @" ".UTF8String];
     }
