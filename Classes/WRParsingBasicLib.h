@@ -17,6 +17,7 @@
 // rule
 #import "WRRule.h"
 #import "WRItem.h"
+#import "WRItemLA1.h"
 
 // language
 #import "WRLanguage.h"
