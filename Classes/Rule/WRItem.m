@@ -25,9 +25,9 @@
 + (instancetype)itemWithRuleStr:(NSString *)ruleStr
                     dotPosition:(NSInteger)dotPosition
                  askingPosition:(NSInteger)askPosition {
-  WRItem *item = [[WRItem alloc] initWithRuleStr:ruleStr
-                                     dotPosition:dotPosition
-                                  askingPosition:askPosition];
+  WRItem *item = [[self alloc] initWithRuleStr:ruleStr
+                                   dotPosition:dotPosition
+                                askingPosition:askPosition];
   return item;
 }
 
@@ -45,9 +45,9 @@
 + (instancetype)itemWithRule:(WRRule *)rule
                  dotPosition:(NSInteger)dotPosition
               askingPosition:(NSInteger)askPosition {
-  return [[WRItem alloc] initWithRule:rule
-                          dotPosition:dotPosition
-                       askingPosition:askPosition];
+  return [[self alloc] initWithRule:rule
+                        dotPosition:dotPosition
+                     askingPosition:askPosition];
 }
 
 - (instancetype)initWithItem:(WRItem *)item
@@ -62,8 +62,8 @@
 
 + (instancetype)itemWithItem:(WRItem *)item
               askingPosition:(NSInteger)askPosition {
-  return [[WRItem alloc] initWithItem:item
-                       askingPosition:askPosition];
+  return [[self alloc] initWithItem:item
+                     askingPosition:askPosition];
 }
 
 - (NSString *)description {

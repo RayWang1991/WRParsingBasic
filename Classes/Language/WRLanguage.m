@@ -192,6 +192,14 @@
                             andStartSymbol:@"S"];
 }
 
++ (WRLanguage *)CFGrammar_9_23 {
+  return [[self alloc] initWithRuleStrings:@
+    [@"S -> E ",
+      @"E -> E - T | T ",
+      @"T -> n | ( E )"]
+                            andStartSymbol:@"S"];
+}
+
 + (WRLanguage *)CFGrammar_Add_Mult_1 {
   return [[self alloc] initWithRuleStrings:@[@"Expr ->  i | Expr + Expr | Expr × Expr"]
                             andStartSymbol:@"Expr"];
