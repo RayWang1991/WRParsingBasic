@@ -239,6 +239,7 @@
 }
 
 #pragma mark label index for rules
+
 - (void)labelRuleIndex {
   for (NSArray *rules in self.grammars.allValues) {
     NSInteger i = 0;
@@ -249,6 +250,7 @@
 }
 
 # pragma mark tokens
+
 - (void)addNonTerminalandTerminals {
   NSInteger nonterminalId = 0;
   _nonterminalList = [NSMutableArray array];
@@ -296,6 +298,7 @@
   return nil;
 }
 # pragma mark Nullable function
+
 - (void)disposeNullableToken {
   // initiate
   _nullableSymbolSet = [NSMutableSet set];
@@ -359,6 +362,7 @@
 }
 
 #pragma mark FirstSet function
+
 - (void)computeFirstSets {
   // compute Fisrst set with eplison consideration
 
@@ -423,6 +427,7 @@
 }
 
 #pragma mark FollowSet function
+
 - (void)computeFollowSets {
   _followSets = [NSMutableDictionary dictionary];
   //add EOF to startSymbol's Follow
@@ -507,7 +512,9 @@
 - (NSSet <NSString *> *)followSetForToken:(NSString *)tokenSymbol {
   return self.followSets[tokenSymbol];
 }
+
 #pragma mark Fisrt+ function
+
 - (void)computeFirstPlusSets {
   _firstPlusSets = [NSMutableDictionary dictionary];
   for (NSString *nont in self.grammars.allKeys) {
