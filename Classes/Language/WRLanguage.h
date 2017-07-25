@@ -23,6 +23,8 @@
 @property (nonatomic, strong, readwrite) NSMutableArray <NSString *> *terminalList;
 
 @property (nonatomic, strong, readwrite) NSDictionary <NSString *, NSArray <WRRule *> *> *grammars;
+@property (nonatomic, strong, readwrite) NSMutableArray <WRRule *> *grammarsInARow;
+@property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSNumber *> *rule2IdMapper;
 
 // used by subclass
 - (instancetype)initWithRuleStrings:(NSArray <NSString *> *)rules

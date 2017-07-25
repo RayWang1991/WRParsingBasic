@@ -72,6 +72,11 @@
                                     self.askPos];
 }
 
+
+- (NSString *)originalDescription{
+  return [super description];
+}
+
 - (NSString *)descriptionForReductions {
   if (self.reductionList.count == 0) {
     return nil;

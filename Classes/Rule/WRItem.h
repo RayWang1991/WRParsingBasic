@@ -69,4 +69,7 @@
 // override methods
 - (NSString *)dotedRule;
 
+// super description
+- (NSString *)originalDescription;
+
 @end

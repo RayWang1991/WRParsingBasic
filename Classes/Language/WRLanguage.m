@@ -249,10 +249,16 @@
 #pragma mark label index for rules
 
 - (void)labelRuleIndex {
+  _rule2IdMapper = [NSMutableDictionary dictionary];
+  _grammarsInARow = [NSMutableArray array];
+  NSInteger globalI = 0;
   for (NSArray *rules in self.grammars.allValues) {
     NSInteger i = 0;
     for (WRRule *rule in rules) {
       rule.ruleIndex = i++;
+      [_rule2IdMapper setValue:@(globalI++)
+                        forKey:rule.description];
+      [_grammarsInARow addObject:rule];
     }
   }
 }
