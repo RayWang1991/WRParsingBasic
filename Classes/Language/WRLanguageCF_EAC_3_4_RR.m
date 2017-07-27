@@ -12,13 +12,14 @@
 
 @implementation WRLanguageCF_EAC_3_4_RR
 - (instancetype)init {
-  return [super initWithRuleStrings:@[
-      @"Goal -> Expr",
-      @"Expr -> Term Expr'",
-      @"Expr' -> + Term Expr'| - Term Expr' | ",
-      @"Term -> Factor Term'",
-      @"Term' -> × Factor Term'| ÷ Factor Term' | ",
-      @"Factor -> ( Expr )| num | name"]
+  return [super initWithRuleStrings:
+      @[
+        @"Goal -> Expr",
+        @"Expr -> Term Expr'",
+        @"Expr' -> + Term Expr'| - Term Expr' | ",
+        @"Term -> Factor Term'",
+        @"Term' -> × Factor Term'| ÷ Factor Term' | ",
+        @"Factor -> ( Expr )| num | name"]
                      andStartSymbol:@"Goal"];
 }
 

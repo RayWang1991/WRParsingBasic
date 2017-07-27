@@ -47,17 +47,7 @@
                                                       [item descriptionForPredecessors]]];
     }
   }
-
   return string;
-
-  /*
-  // asking dict
-  for (NSString *key in self.askingDict) {
-    [string appendString:[NSString stringWithFormat:@"    %@ %@\n",
-                                                    key,
-                                                    self.askingDict[key]]];
-  }
-  */
 }
 
 - (NSMutableArray <WRItem *> *)itemList {
@@ -133,7 +123,7 @@
                            askingPosition:pos]];
   }
 
-  // Aycock and Horspool. Pratical Earley Parsing Computer J., 45(6): 620-630, 2002
+  // Ref: Aycock and Horspool. Pratical Earley Parsing Computer J., 45(6): 620-630, 2002
   if ([self.language isTokenNullable:predictingToken]) {
     [array addObject:[WRItem itemWithRule:item
                               dotPosition:item.dotPos + 1
@@ -171,7 +161,7 @@
         // can only be itemSet0
         NSMutableArray <WRItem *> *array = [NSMutableArray array];
         for (WRItem *activeItem in itemSet0.askingDict[currentItem.leftToken]) {
-          // +1 is OK
+          // +1 is also OK here
           WRItem *scannedItem = [self scanItem:activeItem
                                      withTokon:currentItem.leftToken
                             andItemSetPosition:activeItem.askPos];
@@ -180,7 +170,7 @@
           }
         }
 
-        // notice, we should only add unproceeded item
+        // notice, we should only add unprocessed item
         for (WRItem *item in array) {
           if (!itemSet0.activeSet[item.description] &&
             !itemSet0.completeSet[item.description] &&
@@ -212,7 +202,7 @@
         NSArray <WRItem *> *array = [self predictItem:currentItem
                                   withItemSetPosition:activePos];
 
-        // notice, we should only add unproceeded item
+        // notice, we should only add unprocessed item
         for (WRItem *item in array) {
           if (!itemSet0.activeSet[item.description] &&
             !itemSet0.completeSet[item.description] &&
@@ -236,7 +226,6 @@
     WRItemSet *lastItemSet = [self.itemSetList lastObject];
     WRItemSet *currentItemSet = [[WRItemSet alloc] init];
     [self.itemSetList addObject:currentItemSet];
-//    [currentItemSet.itemList addObjectsFromArray:lastItemSet.activeSet.allValues];
 
     NSInteger currentPosition = self.itemSetList.count - 1;
     workList = currentItemSet.itemList;
@@ -275,7 +264,7 @@
               [array addObject:scannedItem];
             }
           }
-          // notice, we should only add unproceeded item
+          // notice, we should only add unprocessed item
           for (WRItem *item in array) {
             if (!currentItemSet.activeSet[item.description] &&
               !currentItemSet.completeSet[item.description] &&
@@ -306,7 +295,7 @@
 
           NSArray <WRItem *> *array = [self predictItem:currentItem
                                     withItemSetPosition:currentPosition];
-          // notice, we should only add unproceeded item
+          // notice, we should only add unprocessed item
           for (WRItem *item in array) {
             if (!currentItemSet.activeSet[item.description] &&
               !currentItemSet.completeSet[item.description] &&
@@ -428,7 +417,7 @@
 - (void)buildTreeWith:(WRSPPFNode *)u
                   and:(WRItem *)item
                 inSet:(NSUInteger)i {
-  // no nodes for predicated items !!!
+  // should be mentioned that there is no node for predicated item
   [self.processedSetList[i] setValue:item
                               forKey:item.description];
   if (item.rightTokens.count == 0) {

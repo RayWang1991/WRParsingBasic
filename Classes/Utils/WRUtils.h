@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 @class WRTerminal;
 
-typedef NS_ENUM(NSInteger,WRArrayOrder){
+typedef NS_ENUM(NSInteger, WRArrayOrder) {
   WRArrayOrderNormal,
   WRArrayOrderReverse,
 };
@@ -17,22 +17,23 @@ typedef NS_ENUM(NSInteger,WRArrayOrder){
                      forString:(NSString *)str;
 @end
 
-@interface WRTest : NSObject
+@interface WRTestUtils : NSObject
 extern BOOL (^wrCheckTerminal)(WRTerminal *, NSString *, NSInteger, NSInteger, NSInteger);
 @end
 
 @interface WRPair : NSObject
 
-+ (instancetype)pairWith:(id)first and:(id)second;
++ (instancetype)pairWith:(id)first
+                     and:(id)second;
 - (id)first;
 - (id)second;
 
 @end
 
 @interface WRTreeNode : NSObject
-@property(nonatomic, strong, readwrite)NSString *contentStr;
+@property (nonatomic, strong, readwrite) NSString *contentStr;
 // Children
-@property(nonatomic, strong, readwrite) NSArray <WRTreeNode *> *children;
+@property (nonatomic, strong, readwrite) NSArray <WRTreeNode *> *children;
 
 + (instancetype)treeNodeWithContent:(NSString *)content;
 

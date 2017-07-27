@@ -423,7 +423,7 @@ NSString *const kWRLR1ParserErrorDomain = @"erorr.Parser.LR1";
 - (WRLR1DFAState *)DFAStateWithNFAStateSet:(NSSet <WRLR1NFAState *> *)set
                           andContentString:(NSString *)contentString {
   WRLR1DFAState *dfaState = [WRLR1DFAState DFAStateWithContentString:contentString];
-  // dispose the action / goto meaning
+  // dispose the action / goto semantics
   for (WRLR1NFAState *nfaState in set) {
     WRItemLA1 *item = nfaState.item;
     if ([item isComplete]) {

@@ -14,7 +14,7 @@
 @interface WRItemSet : NSObject
 @property (nonatomic, strong, readwrite) NSMutableArray <WRItem *> *itemList; // work list / item list
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, WRItem *> *completeSet; // complete set
-@property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, WRItem *> *activeSet; // active/predict set
+@property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, WRItem *> *activeSet; // active / predict set
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSMutableArray <WRItem *> *> *askingDict;
 
 @end
@@ -22,11 +22,12 @@
 @interface WREarleyParser : NSObject
 @property (nonatomic, strong, readwrite) NSMutableArray <WRItemSet *> *itemSetList;
 @property (nonatomic, strong, readwrite) WRLanguage *language;
-@property (nonatomic, strong, readwrite) WRWordScanner *scanner; // TODO test use
-// construct SPPF, TODO
+@property (nonatomic, strong, readwrite) WRWordScanner *scanner;
+
+// SPPF adn parseTree construction
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, WRSPPFNode *> *nodeSet;
 @property (nonatomic, strong, readwrite) NSArray <NSMutableDictionary <NSString *, WRItem *> *> *processedSetList;
-@property (nonatomic, strong, readwrite) WRSPPFNode *parseForest; // TODO verify use
+@property (nonatomic, strong, readwrite) WRSPPFNode *parseForest;
 @property (nonatomic, strong, readwrite) WRNonterminal *parseTree;
 
 - (void)startParsing;

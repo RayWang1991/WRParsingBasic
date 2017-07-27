@@ -8,7 +8,7 @@
 #import "WRTerminal.h"
 
 //really simple scanner, recognize each character as a token
-//deprecated, use WRWordScanner
+//deprecated, use WRWordScanner instead
 
 @interface WRScanner : NSObject
 @property (nonatomic, strong, readwrite) NSMutableArray <WRTerminal *> *tokens;

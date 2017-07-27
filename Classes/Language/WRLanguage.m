@@ -6,10 +6,12 @@
 
 #import "WRLanguage.h"
 #import "WRLanguageCF_EAC_3_4_RR.h"
+#import "WRRELanguage.h"
 
 @interface WRLanguage ()
 @property (nonatomic, strong, readwrite) NSMutableSet *nullableSymbolSet;
-// LL(1) parsing use
+
+// look aheads
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSMutableSet<NSString *> *> *firstSets;
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSMutableSet<NSString *> *> *followSets;
 @property (nonatomic, strong, readwrite) NSMutableDictionary <NSString *, NSArray< NSMutableSet<NSString *> *> *>
@@ -113,74 +115,36 @@
 }
 
 + (WRLanguage *)CFGrammar7_8 {
-
-  NSDictionary *dict = @{
-    @"S": @[[WRRule ruleWithRuleStr:@"S -> E"]],
-    @"E": @[[WRRule ruleWithRuleStr:@"E -> E Q F"],
-      [WRRule ruleWithRuleStr:@"E -> F"]],
-    @"F": @[[WRRule ruleWithRuleStr:@"F -> a"]],
-    @"Q": @[[WRRule ruleWithRuleStr:@"Q -> +"],
-      [WRRule ruleWithRuleStr:@"Q -> -"]]};
-  NSSet *nonterminals =
-    [NSSet setWithObjects:@"S",
-                          @"E",
-                          @"F",
-                          @"Q", nil];
-  NSSet *terminals =
-    [NSSet setWithObjects:@"a",
-                          @"m",
-                          @"p", nil];
-
-  WRLanguage *language = [[WRLanguage alloc] init];
-  language.terminals = terminals;
-  language.nonterminals = nonterminals;
-  language.grammars = dict;
-  language.startSymbol = @"S";
-  [language disposeNullableToken];
-
-  return language;
+  return [[self alloc] initWithRuleStrings:
+      @[@"S -> E",
+        @"E -> E Q F | F",
+        @"F -> a",
+        @"Q -> + | -"]
+                            andStartSymbol:@"S"];
 }
 
 + (WRLanguage *)CFGrammar7_17 {
-
-  NSDictionary *dict = @{
-    @"S": @[[WRRule ruleWithRuleStr:@"S -> E"]],
-    @"E": @[[WRRule ruleWithRuleStr:@"E -> E Q F"],
-      [WRRule ruleWithRuleStr:@"E -> F"]],
-    @"F": @[[WRRule ruleWithRuleStr:@"F -> a"]],
-    @"Q": @[[WRRule ruleWithRuleStr:@"Q -> *"],
-      [WRRule ruleWithRuleStr:@"Q -> /"],
-      [WRRule ruleWithRuleStr:@"Q -> "]]};
-  NSSet *nonterminals =
-    [NSSet setWithObjects:@"S",
-                          @"E",
-                          @"F",
-                          @"Q", nil];
-  NSSet *terminals =
-    [NSSet setWithObjects:@"a",
-                          @"m",
-                          @"d", nil];
-
-  WRLanguage *language = [[WRLanguage alloc] init];
-  language.nonterminals = nonterminals;
-  language.terminals = terminals;
-  language.grammars = dict;
-  language.startSymbol = @"S";
-  [language disposeNullableToken];
-
-  return language;
+  return [[self alloc] initWithRuleStrings:
+      @[@"S -> E",
+        @"E -> E Q F | F",
+        @"F -> a",
+        @"Q -> * | / |"]
+                            andStartSymbol:@"S"];
 }
 
 + (WRLanguage *)CFGrammar7_19 {
-  return [[self alloc] initWithRuleStrings:@[@"S -> A A x", @"A -> "]
+  return [[self alloc] initWithRuleStrings:
+      @[@"S -> A A x",
+        @"A -> "]
                             andStartSymbol:@"S"];
 }
 
 + (WRLanguage *)CFGrammar_8_9 {
-  return [[self alloc] initWithRuleStrings:@[@"Session -> Facts Question | ( Session ) Session",
-      @"Facts -> Fact Facts| ",
-      @"Fact -> ! string",
-      @"Question -> ? string"]
+  return [[self alloc] initWithRuleStrings:
+      @[@"Session -> Facts Question | ( Session ) Session",
+        @"Facts -> Fact Facts| ",
+        @"Fact -> ! string",
+        @"Question -> ? string"]
                             andStartSymbol:@"Session"];
 }
 
@@ -201,48 +165,45 @@
 }
 
 + (WRLanguage *)CFGrammar_Add_Mult_1 {
-  return [[self alloc] initWithRuleStrings:@[@"Expr ->  i | Expr + Expr | Expr × Expr"]
+  return [[self alloc] initWithRuleStrings:
+      @[@"Expr ->  i | Expr + Expr | Expr × Expr"]
                             andStartSymbol:@"Expr"];
 }
 
 + (WRLanguage *)CFGrammar_Test_First_1 {
-  return [[self alloc] initWithRuleStrings:@[@"S ->  A B",
-      @"A -> B b|",
-      @"B -> A a|c|"]
+  return [[self alloc] initWithRuleStrings:
+      @[@"S ->  A B",
+        @"A -> B b|",
+        @"B -> A a|c|"]
                             andStartSymbol:@"S"];
 }
 
 + (WRLanguage *)CFGrammar_SPFER_2 {
-  return [[self alloc] initWithRuleStrings:@[@"S -> S S | b"]
+  return [[self alloc] initWithRuleStrings:
+      @[@"S -> S S | b"]
                             andStartSymbol:@"S"];
 }
 
 + (WRLanguage *)CFGrammar_SPFER_3 {
-  return [[self alloc] initWithRuleStrings:@[@"S -> A T | a T",
-      @"A -> a| B A",
-      @"B ->",
-      @"T -> b b b"]
+  return [[self alloc] initWithRuleStrings:
+      @[@"S -> A T | a T",
+        @"A -> a| B A",
+        @"B ->",
+        @"T -> b b b"]
                             andStartSymbol:@"S"];
 }
 
 + (WRLanguage *)CFGrammar_EAC_3_4 { // right recursive
-  return [[self alloc] initWithRuleStrings:@[@"Expr -> Expr + Term | Expr - Term | Term",
-      @"Expr' -> + Term Expr'| - Term Expr' | ",
-      @"Term -> Factor Term'",
-      @"Term' -> × Factor Term'| ÷ Factor Term' | ",
-      @"Factor -> ( Expr )| num | name"]
+  return [[self alloc] initWithRuleStrings:
+      @[@"Expr -> Expr + Term | Expr - Term | Term",
+        @"Expr' -> + Term Expr'| - Term Expr' | ",
+        @"Term -> Factor Term'",
+        @"Term' -> × Factor Term'| ÷ Factor Term' | ",
+        @"Factor -> ( Expr )| num | name"]
                             andStartSymbol:@"Expr"];
 }
 
-+ (WRLanguage *)CFGrammar_EAC_3_4_RR { // right recursive
-//  return [[self alloc] initWithRuleStrings:@[
-//      @"Goal -> Expr",
-//      @"Expr -> Term Expr'",
-//      @"Expr' -> + Term Expr'| - Term Expr' | ",
-//      @"Term -> Factor Term'",
-//      @"Term' -> × Factor Term'| ÷ Factor Term' | ",
-//      @"Factor -> ( Expr )| num | name"]
-//                            andStartSymbol:@"Goal"];
++ (WRLanguage *)CFGrammar_EAC_3_4_RR {
   return [[WRLanguageCF_EAC_3_4_RR alloc] init];
 }
 
@@ -519,8 +480,6 @@
     changedTokens = tempTokens;
     tempTokens = t;
   }
-
-  NSLog(@"done");
 }
 
 - (NSSet <NSString *> *)followSetForToken:(NSString *)tokenSymbol {

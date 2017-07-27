@@ -45,7 +45,7 @@
 
 @end
 
-@implementation WRTest
+@implementation WRTestUtils
 BOOL (^wrCheckTerminal)(WRTerminal *, NSString *, NSInteger, NSInteger, NSInteger) =
 ^(WRTerminal *token, NSString *symbol, NSInteger length, NSInteger line, NSInteger column) {
   return (BOOL)(([token.symbol isEqualToString:symbol]) &&
