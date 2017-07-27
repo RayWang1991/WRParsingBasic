@@ -10,19 +10,19 @@ Pod::Spec.new do |s|
 
   s.name         = "WRParsingBasic"
   s.license      =  "MIT"
-  s.version      = "0.1.0"                #版本号
-  s.summary      = "Basic Components for CF parsing"        #简短介绍
+  s.version      = "0.1.0"               
+  s.summary      = "Basic Components for CF parsing"        
 
   s.homepage     =  "https://github.com/RayWang1991/WRParsingBasic"
 
-  s.requires_arc = true                    #是否使用ARC
+  s.requires_arc = true                    
   
   s.source       = { :git => "https://github.com/RayWang1991/WRParsingBasic.git", :tag => "#{s.version}" }
 
   s.source_files  = "Classes",
                     "Classes/**/*.{h,m}"
   
-  s.frameworks = 'Foundation'    #所需的framework,多个用逗号隔开
+  s.frameworks = 'Foundation'    
 
   s.author       = { "ray wang" => "wangrui@bongmi.com" }
 end
