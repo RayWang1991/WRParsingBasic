@@ -144,7 +144,7 @@ NSString *const WRRELanguageVirtualConcatenate = @"cat";
             WRToken *postOp = children[1];
             [postOp accept:self];
             WRAST *ast = [[WRAST alloc] initWithWRTerminal:postOp.synAttr];
-            [ast addChild:char1];
+            [ast addChild:[[WRAST alloc] initWithWRTerminal:char1]];
             nonterminal.synAttr = ast;
             break;
           }
