@@ -160,8 +160,8 @@ NSString *const kWRLL1ParserErrorDomain = @"erorr.Parser.LL1";
 
 - (void)startParsing {
   [self.scanner setNumOfEof:1];
-  [self.scanner reset];
   [self.scanner startScan];
+  [self.scanner resetTokenIndex];
   [self.scanner scanToEnd];
 
   _errors = [NSMutableArray array];
