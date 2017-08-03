@@ -134,6 +134,12 @@
 
 // construct the itemsets
 - (void)startParsing {
+  // set scanner
+  [self.scanner startScan];
+  [self.scanner setNumOfEof:0];
+  [self.scanner resetTokenIndex];
+  [self.scanner scanToEnd];
+  
   // initiation
   self.itemSetList = [NSMutableArray array];
   WRItemSet *itemSet0 = [[WRItemSet alloc] init];
@@ -328,7 +334,7 @@
 
 // post construct shared packed parse forest (SPPF)
 - (void)constructItemPointers {
-  [self.scanner reset];
+  [self.scanner resetTokenIndex];
   // dispose item set 0
   WRItemSet *currentSet = self.itemSetList[0];
   for (NSString *completeStr in currentSet.completeSet) {
