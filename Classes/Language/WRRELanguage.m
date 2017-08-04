@@ -143,7 +143,7 @@ NSString *const WRRELanguageVirtualConcatenate = @"cat";
             WRTerminal *char1 = children[0];
             WRToken *postOp = children[1];
             [postOp accept:self];
-            WRAST *ast = [[WRAST alloc] initWithWRTerminal:postOp.synAttr];
+            WRAST *ast = postOp.synAttr;
             [ast addChild:[[WRAST alloc] initWithWRTerminal:char1]];
             nonterminal.synAttr = ast;
             break;
