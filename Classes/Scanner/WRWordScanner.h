@@ -20,7 +20,7 @@
 
 - (WRTerminal *)tokenAtIndex:(NSInteger)index;
 
-- (void)reset;
+- (void)resetTokenIndex;
 
 - (void)test;
 @end

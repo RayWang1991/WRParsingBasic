@@ -18,7 +18,7 @@
 
 - (void)startScan;
 
-- (void)reset;
+- (void)resetTokenIndex;
 
 - (WRTerminal *)nextToken;
 

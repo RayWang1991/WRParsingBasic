@@ -43,8 +43,12 @@ typedef NS_ENUM(NSInteger, WRWordScannerState) {
   [self.errors removeAllObjects];
 }
 
-- (void)reset {
+- (void)resetTokenIndex {
   self.tokenIndex = 0;
+}
+
+- (void)resetAll{
+  [self resetTokenIndex];
 }
 
 - (WRTerminal *)tokenAtIndex:(NSInteger)index {

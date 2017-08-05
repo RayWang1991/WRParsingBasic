@@ -20,10 +20,10 @@
 }
 
 - (void)startScan {
-  [self reset];
+  [self resetTokenIndex];
 }
 
-- (void)reset {
+- (void)resetTokenIndex {
   _tokenIndex = 0;
 }
 

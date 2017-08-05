@@ -562,8 +562,9 @@ NSString *const kWRLR1ParserErrorDomain = @"erorr.Parser.LR1";
 
 #pragma mark - run parser
 - (void)startParsing {
+  [self.scanner startScan];
   [self.scanner setNumOfEof:1];
-  [self.scanner reset];
+  [self.scanner resetTokenIndex];
   [self.scanner scanToEnd];
 
   _tokenStack = [NSMutableArray array];

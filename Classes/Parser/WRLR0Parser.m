@@ -472,9 +472,9 @@ transitionTokenDictForNFAStates:(NSSet<WRLR0NFAState *> *)nfaStates {
 #pragma mark - run DFA parser
 - (void)startParsing {
   // construct the parse tree at run time
-  [self.scanner reset];
+  [self.scanner resetTokenIndex];
   [self.scanner scanToEnd];
-  [self.scanner reset];
+  [self.scanner resetTokenIndex];
 
   _errors = [NSMutableArray array];
   _tokenStack = [NSMutableArray array];
