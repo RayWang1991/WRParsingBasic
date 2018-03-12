@@ -12,7 +12,7 @@ WRParsingBasic is A powerful Parser Generator, supporting Earley Parser, LL1 Par
 - If the result is tree-style, print it in dash-style or lisp style
 
 e.g.
-`
+```
 Grammar:
      1. S -> A T | a T
      2. A -> a| B A 
@@ -34,14 +34,14 @@ S
         +-------b
         +-------b
         +-------b
-`
+```
 
 ## LL1 Parser
 - Capable of Parsing LL1 Grammar
 - Generate Grammar tree when successful
 
 e.g.
-`
+```
 - Grammar:
         Goal -> Expr
         Expr -> Term Expr'
@@ -112,7 +112,7 @@ AST:
 +-------÷
         +-------num
         +-------name
-`
+```
 
 ## LR0 Parser & LR1 Parser are also available.   
 (For Grammar Power: CF > LR1 > LR0 > LL1)
