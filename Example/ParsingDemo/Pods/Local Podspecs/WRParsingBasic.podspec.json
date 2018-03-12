@@ -1,0 +1,26 @@
+{
+  "name": "WRParsingBasic",
+  "license": "MIT",
+  "version": "0.1.0",
+  "summary": "Basic Components for CF parsing",
+  "homepage": "https://github.com/RayWang1991/WRParsingBasic",
+  "requires_arc": true,
+  "source": {
+    "git": "https://github.com/RayWang1991/WRParsingBasic.git",
+    "tag": "0.1.0"
+  },
+  "source_files": [
+    "Classes",
+    "Classes/**/*.{h,m}"
+  ],
+  "frameworks": "Foundation",
+  "authors": {
+    "ray wang": "wangrui@bongmi.com"
+  },
+  "platforms": {
+    "osx": null,
+    "ios": null,
+    "tvos": null,
+    "watchos": null
+  }
+}

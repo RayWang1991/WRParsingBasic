@@ -1,0 +1,16 @@
+PODS:
+  - WRParsingBasic (0.1.0)
+
+DEPENDENCIES:
+  - WRParsingBasic (from `../..`)
+
+EXTERNAL SOURCES:
+  WRParsingBasic:
+    :path: "../.."
+
+SPEC CHECKSUMS:
+  WRParsingBasic: 57d07dab937f66faea1b878f010737977bf24390
+
+PODFILE CHECKSUM: 918a1a1a877526de549294c4478d5c12eaefe55a
+
+COCOAPODS: 1.2.1

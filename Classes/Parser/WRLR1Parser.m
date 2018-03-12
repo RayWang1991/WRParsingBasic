@@ -178,10 +178,14 @@ NSString *const kWRLR1ParserErrorDomain = @"erorr.Parser.LR1";
   assert(_scanner);
 
   [self constructNFA];
+#ifdef DEBUG
   [self printAllNFAStatesAndTransitions];
+#endif
   [self constructDFA];
   assert(self.conflicts.count == 0);
+#ifdef DEBUG
   [self printAllDFAStatesAndTransitions];
+#endif
 }
 
 #pragma mark NFA construction

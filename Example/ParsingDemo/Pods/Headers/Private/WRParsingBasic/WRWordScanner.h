@@ -1,0 +1,1 @@
+../../../../../../Classes/Scanner/WRWordScanner.h
